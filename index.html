@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Geolocation Test</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script rel="text/javascript" src="./assets/api/pubnub.js"></script>
+</head>
+<body>
+    <button id="get-location">Click Me!</button>
+</body>
+<script>
+    // Test GPS API
+    $("#get-location").on("click", function () {
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://api.ipdata.co/?api-key=dbd74d08fb61a09922523a741a0c6feea9c5a1f578aeaf124dfe7cd9');
+        request.setRequestHeader('Accept', 'application/json');
+        request.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                console.log('Status:', this.status);
+                console.log('Headers:', this.getAllResponseHeaders());
+                console.log('Body:', this.responseText);
+            }
+        };
+        request.send();
+    });
+
+
+
+
+    // test PubNub
+    var pubnub = new PubNub({
+        subscribeKey: "sub-c-ab63bdce-168b-11e9-b552-46d61eed2fbc",
+        publishKey: "pub-c-1e89d8ed-eb9a-4ed0-832c-7a5d884df847",
+        // cipherKey: "myCipherKey",
+        authKey: "sub-c-df9c10ea-1687-11e9-b735-ca3a04aa6aa9",
+        logVerbosity: true,
+        uuid: "myUniqueUUID",
+        ssl: true,
+        presenceTimeout: 130
+    });
+</script>
+</html>
