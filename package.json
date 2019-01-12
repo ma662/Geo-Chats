@@ -1,0 +1,22 @@
+{
+  "name": "geo-chats",
+  "version": "1.0.0",
+  "description": "Project 1 repository for a messaging chat room app that utilizes Google maps API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jshint assets/javascript/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ma662/Geo-Chats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ma662/Geo-Chats/issues"
+  },
+  "homepage": "https://github.com/ma662/Geo-Chats#readme",
+  "dependencies": {
+    "jshint": "^2.9.7"
+  }
+}
