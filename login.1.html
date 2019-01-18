@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Sign-Up Today!</title>
+
+  <!--CSS link -->
+  <link rel="stylesheet" href="assets/css/login.css">
+
+<!--firebase unique code-->
+
+<script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+<!--authorization link-->
+<script src="https://www.gstatic.com/firebasejs/5.7.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.7.3/firebase-auth.js"></script>
+
+</head>
+
+<body>
+
+    <div id="app">
+        <input type="email" id="txtUserName" placeholder="Enter Username" /> <br/>
+        <input type="password" id="txtPassword" placeholder="Enter password" /><br/>
+        <button id="btnLogin" >Log in</button>
+        <button id="btnSignUp" >Sign Up</button>
+        <button id="btnLogOut" class="hide" >Log Out</button>
+        <button id="withGoogle">Log In with Google</button>
+    </div>  
+    <div id="results"></div>
+
+
+
+  <script src="assets/javascript/signin.js"></script>
+</body>
+</html>

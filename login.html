@@ -10,6 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
+
     <title>GeoChats | Signin</title>
 
     <!-- Bootstrap core CSS -->
@@ -20,14 +21,17 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-        crossorigin="anonymous"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script> -->
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/login.css">
+
+    <!--Google Font Link-->
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -41,28 +45,32 @@
 </head>
 
 <body data-gr-c-s-loaded="true">
-
     <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Sign In:</h5>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                <input type="login" id="inputLogin" class="form-control" placeholder="User Login"
+                                    required autofocus>
+                            </div>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Log In</button>
+                    <hr class="my-4">
 
-        <form class="form-signin">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <label for="inputEmail" class="sr-only">Username</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
+                    </form>
+                </div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
-
-    </div> <!-- /container -->
+        </div>
+    </div>
+    </div>
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
 
 
 </body>
