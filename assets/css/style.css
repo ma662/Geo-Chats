@@ -21,6 +21,10 @@ p light {
     color: gainsboro;
 }
 
+h2 centre {
+    text-align: center;
+}
+
 h3 {
     color: gainsboro;
 }
