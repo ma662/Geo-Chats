@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ma662/Geo-Chats#readme",
   "dependencies": {
+    "firebaseui": "^3.5.2",
     "jshint": "^2.9.7"
   }
 }

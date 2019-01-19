@@ -1,3 +1,22 @@
+var uiConfig = {
+    signInSuccessUrl: '<url-to-redirect-to-on-success>',
+    signInOptions: [
+     firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    // Terms of service url/callback.
+    tosUrl: '<your-tos-url>',
+    // Privacy policy url/callback.
+    privacyPolicyUrl: function() {
+      window.location.assign('<your-privacy-policy-url>');
+    }
+  };
+  // Initialize the FirebaseUI Widget using Firebase.
+  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+  // The start method will wait until the DOM is loaded.
+  ui.start('#firebaseui-auth-container', uiConfig);
+
+
+
 var config = {
     apiKey: "AIzaSyDngPn-9Y0lmb_00NC-y76ybx8vFc-j6P4",
     authDomain: "signin-8e10e.firebaseapp.com",
@@ -5,8 +24,11 @@ var config = {
     projectId: "signin-8e10e",
     storageBucket: "signin-8e10e.appspot.com",
     messagingSenderId: "497085812892"
-  };
-  firebase.initializeApp(config);
+};
+firebase.initializeApp(config);
+
+var firebase = require('firebase');
+var firebaseui = require('firebaseui');
 
 /*firebase authorization variable*/
 const auth = firebase.auth();
@@ -23,56 +45,41 @@ const googlePromise = auth.signInWithPopup(googleProvider);
 firebase.auth().onAuthStateChanged();
 
 /* Register with username and password event listener*/
-document.getElementById("btnSignUp").addEventListener('click', e=>{
+document.getElementById("btnSignUp").addEventListener('click', e => {
     const email = document.getElementById("txtUserName").value;
     const pass = document.getElementById("txtPassword").value;
-    firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
-     console.log(error.message);
+    firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function (error) {
+        console.log(error.message);
     });
-  })
+})
 
-  /* Login with existing username and password event listener */
-document.getElementById("btnLogin").addEventListener('click', e=>{
+/* Login with existing username and password event listener */
+document.getElementById("btnLogin").addEventListener('click', e => {
     const email = document.getElementById("txtUserName").value;
     const pass = document.getElementById("txtPassword").value;
     const promise = firebase.auth().signInWithEmailAndPassword(email, pass);
-    promise.catch(e=>{ console.log(e.massage)})
-  })
+    promise.catch(e => { console.log(e.massage) })
+})
 
-  /* app change upon loggin in and logging out (making the logout button visible when logged in) */
-  firebase.auth().onAuthStateChanged(user=>{ 
-    if(user){
-      document.getElementById("btnLogOut").classList.remove('hide')
-    } else{
-      document.getElementById("btnLogOut").classList.add('hide')
+/* app change upon loggin in and logging out (making the logout button visible when logged in) */
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        document.getElementById("btnLogOut").classList.remove('hide')
+    } else {
+        document.getElementById("btnLogOut").classList.add('hide')
     }
-  })
+})
 
-  /* logging out */
+/* logging out */
 
-  document.getElementById("btnLogOut").addEventListener('click', e=>{
+document.getElementById("btnLogOut").addEventListener('click', e => {
     firebase.auth().signOut();
     console.log('logged out')
-  })
+});
 
 
-  // google pop up sign in option 
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    var token = result.credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    // ...
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ... 
-  });
+
+
 
 
 
