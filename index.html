@@ -4,14 +4,12 @@
     <!-- Coded by Myles Alcala -->
 
     <!-- Template for Later: https://bootsnipp.com/snippets/featured/elegant-bootstrap-4-message-chat-box-template -->
-    <title>Geo-Chats Skeleton</title>
+    <title>Geo-Chats Messaging Skeleton</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     
     <!-- Linking Firebase -->
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
-</head>
-<body>
     <style>
         #chat-history {
             background-color: rgba(105, 90, 205, 0.418);
@@ -24,20 +22,38 @@
             overflow: scroll;
         }
     </style>
+</head>
+<body>
+    <div id="region-testing">
+        <label>Choose your region: </label>
+        <button class="region" id="region:jersey-city">Jersey City</button>
+        <button class="region" id="region:new-york-city">New York</button>
+    </div>
+    
     <script>
+        var myRegion = null;
+        var debugVar = null;
+        var username = "nikobtristam"; // pull this from login database
+        
+        $(".region").on("click", function(){
+            // (ROB STUFF - Check Location If Region is Bad, No Entry)
+
+            // else, all loading and storing is based upon a region string
+            myRegion = this.id;
+            console.log(myRegion);
+       
 
         // NOTES: 
-        // When should we poll user location initially? When chatorom is selected? Upon login?
+        // Need region poll upon clicking on region button
 
         // To do: 
-            // change 
+            // username gets linked by nikki user db
+            
 
-        var debugVar = null;
 
         // Chat Variables
         //var keyArr = []; NOt sure if needed
 
-        var username = "nikobtristam"; // pull this from login database
 
         // Initialize Firebase for Messaging 
         var config = {
@@ -105,7 +121,7 @@
                 
                 // var messageKey =   // not sure if i need this
 
-                database.ref('testing/').push({ // TESTING needs to be changed :/
+                database.ref(myRegion + "/").push({ // TESTING needs to be changed :/
                     username: username,
                     message: newMessage,
                     timestamp: time,
@@ -124,25 +140,19 @@
         }); //end send
 
         database.ref().on("value", function(snapshot) {
+            // everytime this fires, empty the chat
             chatHistory.empty();
-            console.log(snapshot.val());
-            
+
             debugVar = snapshot.val();
-
-            // var key = Object.keys(snapshot.val())[0];
-
-            // populate array of keys for now
-            console.log(Object.keys(snapshot.val().testing).length);
+            // console.log(snapshot.val());
 
             // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
+            for (var i=0; i<Object.keys(snapshot.val()[myRegion]).length; i++) {
 
-            for (var i=0; i<Object.keys(snapshot.val().testing).length; i++) {
-                // every time this fires, empty the chat
-
-                var thisKey = Object.keys(snapshot.val().testing)[i];
+                var thisKey = Object.keys(snapshot.val()[myRegion])[i];
                 console.log(thisKey);
                 
-                var thisMsg = $("<p>").text(snapshot.val().testing[thisKey].username + ': ' + snapshot.val().testing[thisKey].message + ' at ' + snapshot.val().testing[thisKey].timestamp);
+                var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': ' + snapshot.val()[myRegion][thisKey].message + ' at ' + snapshot.val()[myRegion][thisKey].timestamp);
                 console.log(thisMsg.text());
 
                 thisMsg.appendTo(chatHistory);
@@ -158,6 +168,7 @@
             // }, function(errorObject) {
             // console.log("The read failed: " + errorObject.code);
         });
+    }); // end region
 
     </script>
 </body>
