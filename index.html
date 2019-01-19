@@ -13,6 +13,11 @@
 </head>
 <body>
     <script>
+        var debugVar = null;
+
+        // Chat Variables
+        var keyArr = [];
+
         var username = "nikobtristam"; // pull this from login database
 
         // Initialize Firebase for Messaging 
@@ -30,6 +35,7 @@
 
         var chatDiv = $("<div>");
         var chatHistory = $("<div>");
+        chatHistory.appendTo(chatDiv);
 
         // Things for Input
         var inputForm = $("<form>");
@@ -41,7 +47,8 @@
         inputField.appendTo(inputForm);
         send.appendTo(inputForm);
 
-        inputForm.appendTo(document.body);
+        inputForm.appendTo(chatDiv);
+        chatDiv.appendTo(document.body);
 
         send.on("click", function(e){
             e.preventDefault();
@@ -57,24 +64,76 @@
                 var today = new Date();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                database.ref('testing/').push({
+                // Get a key for a new Post.
+                // var newPostKey = firebase.database().ref().child('testing').push().key;
+                
+                var messageKey = database.ref('testing/').push({
                     username: username,
                     message: newMessage,
                     timestamp: time,
-                });
+                }).key;
+                console.log(messageKey);
+
+                keyArr.push(messageKey);
             }
 
             // if ping button is clicked, add some rob code 
             // message becomes the google api maps image instead of txt
+            
 
-            // Listener function
-            database.ref('testing/').on("child_added", function(childSnapshot) {
-                console.log(childSnapshot.val().username);
-                console.log(childSnapshot.val().message);
-                console.log(childSnapshot.val().timestamp);
+
+
+            // // Listener function
+            // database.ref('testing/').value()
+
+            // database.ref('testing/').on("child_added", function(childSnapshot) {
+            //     console.log(childSnapshot.val().username);
+            //     console.log(childSnapshot.val().message);
+            //     console.log(childSnapshot.val().timestamp);
+
+            //     var msg = $("<p>").text(childSnapshot.val().username + ' ' + childSnapshot.val().message + " at " + childSnapshot.val().timestamp);
+            //     msg.appendTo(chatHistory);
+            // });
+
+
+        }); //end send
+
+
+
+        database.ref().on("value", function(snapshot) {
+            chatHistory.empty();
+            console.log(snapshot.val());
+            
+            debugVar = snapshot.val();
+
+            // var key = Object.keys(snapshot.val())[0];
+
+            // populate array of keys for now
+            console.log(Object.keys(snapshot.val().testing).length);
+
+            // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
+
+            for (var i=0; i<Object.keys(snapshot.val().testing).length; i++) {
+                // every time this fires, empty the chat
+
+                var thisKey = Object.keys(snapshot.val().testing)[i];
+                console.log(thisKey);
+                
+                var thisMsg = $("<p>").text(snapshot.val().testing[thisKey].username + ': ' + snapshot.val().testing[thisKey].message + ' at ' + snapshot.val().testing[thisKey].timestamp);
+                console.log(thisMsg.text());
+
+                thisMsg.appendTo(chatHistory);
             }
 
+            //snapshot.val().testing[thisKey].username
 
+            // console.log(key);
+            console.log("I have fired initially or because of a db update");
+            // clickCounter = snapshot.val().clickCount;
+
+            // $("#chat-history").text(snapshot.val().clickCount);
+            // }, function(errorObject) {
+            // console.log("The read failed: " + errorObject.code);
         });
 
     </script>
