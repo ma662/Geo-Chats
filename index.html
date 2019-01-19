@@ -33,7 +33,9 @@
     <script>
         var myRegion = null;
         var debugVar = null;
-        var username = "nikobtristam"; // pull this from login database
+
+
+        var username = prompt("Please enter a username"); // pull this from login database
         
         $(".region").on("click", function(){
             // (ROB STUFF - Check Location If Region is Bad, No Entry)
@@ -48,12 +50,6 @@
 
         // To do: 
             // username gets linked by nikki user db
-            
-
-
-        // Chat Variables
-        //var keyArr = []; NOt sure if needed
-
 
         // Initialize Firebase for Messaging 
         var config = {
@@ -82,6 +78,9 @@
         inputField.appendTo(inputForm);
         send.appendTo(inputForm);
 
+        var ping = $("<button type='button'>").text("Placeholder Ping");
+        ping.appendTo(inputForm);
+
         inputForm.appendTo(chatDiv);
         chatDiv.appendTo(document.body);
 
@@ -92,7 +91,7 @@
 
             if ($("#input-field").val() != ''){
                 var newMessage = $("#input-field").val();
-                alert("debugging: " + newMessage);
+                // alert("debugging: " + newMessage);
             
                 // forcibly clear input field
                 $("#input-field").val('');
@@ -119,19 +118,13 @@
 
                 var time = hours + ":" + mins + ":" + secs;
                 
-                // var messageKey =   // not sure if i need this
-
                 database.ref(myRegion + "/").push({ // TESTING needs to be changed :/
                     username: username,
                     message: newMessage,
                     timestamp: time,
-                })
-                //.key
-                ;
-
-                //console.log(messageKey);
-
-                // keyArr.push(messageKey);
+                });
+  
+                $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
             }
 
             // if ping button is clicked, add some rob code 
@@ -167,6 +160,7 @@
             // $("#chat-history").text(snapshot.val().clickCount);
             // }, function(errorObject) {
             // console.log("The read failed: " + errorObject.code);
+            $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
         });
     }); // end region
 
