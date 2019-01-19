@@ -1,28 +1,82 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+    <!-- Coded by Myles Alcala -->
+
+    <!-- Template for Later: https://bootsnipp.com/snippets/featured/elegant-bootstrap-4-message-chat-box-template -->
     <title>Geo-Chats Skeleton</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
+    
+    <!-- Linking Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
 </head>
 <body>
-    <button id="get-location">Click Me!</button>
-</body>
-<script>
-    // Test GPS API
-    $("#get-location").on("click", function () {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'https://api.ipdata.co/?api-key=dbd74d08fb61a09922523a741a0c6feea9c5a1f578aeaf124dfe7cd9');
-        request.setRequestHeader('Accept', 'application/json');
-        request.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                console.log('Status:', this.status);
-                console.log('Headers:', this.getAllResponseHeaders());
-                console.log('Body:', this.responseText);
-            }
-        };
-        request.send();
-    });
+    <script>
+        var username = "nikobtristam"; // pull this from login database
 
-</script>
+        // Initialize Firebase for Messaging 
+        var config = {
+        apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+        authDomain: "geo-chats.firebaseapp.com",
+        databaseURL: "https://geo-chats.firebaseio.com",
+        projectId: "geo-chats",
+        storageBucket: "geo-chats.appspot.com",
+        messagingSenderId: "157534175404"
+        };
+        firebase.initializeApp(config);
+
+        var database = firebase.database();
+
+        var chatDiv = $("<div>");
+        var chatHistory = $("<div>");
+
+        // Things for Input
+        var inputForm = $("<form>");
+
+        var inputField  = $("<input type='text'>");
+        inputField.attr("id", "input-field");
+
+        var send = $("<button type='submit'>").text("Send Message");
+        inputField.appendTo(inputForm);
+        send.appendTo(inputForm);
+
+        inputForm.appendTo(document.body);
+
+        send.on("click", function(e){
+            e.preventDefault();
+
+            if ($("#input-field").val() != ''){
+                var newMessage = $("#input-field").val();
+                alert("debugging: " + newMessage);
+            
+                // forcibly clear input field
+                $("#input-field").val('');
+
+                // for timestamp
+                var today = new Date();
+                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                database.ref('testing/').push({
+                    username: username,
+                    message: newMessage,
+                    timestamp: time,
+                });
+            }
+
+            // if ping button is clicked, add some rob code 
+            // message becomes the google api maps image instead of txt
+
+            // Listener function
+            database.ref('testing/').on("child_added", function(childSnapshot) {
+                console.log(childSnapshot.val().username);
+                console.log(childSnapshot.val().message);
+                console.log(childSnapshot.val().timestamp);
+            }
+
+
+        });
+
+    </script>
+</body>
 </html>
