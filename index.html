@@ -45,92 +45,92 @@
             console.log(myRegion);
        
 
-        // NOTES: 
-        // Need region poll upon clicking on region button
+            // NOTES: 
+            // Need region poll upon clicking on region button
 
-        // To do: 
-            // username gets linked by nikki user db
+            // To do: 
+                // username gets linked by nikki user db
 
-        // Initialize Firebase for Messaging 
-        var config = {
-        apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
-        authDomain: "geo-chats.firebaseapp.com",
-        databaseURL: "https://geo-chats.firebaseio.com",
-        projectId: "geo-chats",
-        storageBucket: "geo-chats.appspot.com",
-        messagingSenderId: "157534175404"
-        };
-        firebase.initializeApp(config);
+            // Initialize Firebase for Messaging 
+            var config = {
+            apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+            authDomain: "geo-chats.firebaseapp.com",
+            databaseURL: "https://geo-chats.firebaseio.com",
+            projectId: "geo-chats",
+            storageBucket: "geo-chats.appspot.com",
+            messagingSenderId: "157534175404"
+            };
+            firebase.initializeApp(config);
 
-        var database = firebase.database();
+            var database = firebase.database();
 
-        var chatDiv = $("<div id='chat-div'>");
-        var chatHistory = $("<div id='chat-history'>");
-        chatHistory.appendTo(chatDiv);
+            var chatDiv = $("<div id='chat-div'>");
+            var chatHistory = $("<div id='chat-history'>");
+            chatHistory.appendTo(chatDiv);
 
-        // Things for Input
-        var inputForm = $("<form>");
+            // Things for Input
+            var inputForm = $("<form>");
 
-        var inputField  = $("<input type='text'>");
-        inputField.attr("id", "input-field");
+            var inputField  = $("<input type='text'>");
+            inputField.attr("id", "input-field");
 
-        var send = $("<button type='submit'>").text("Send Message");
-        inputField.appendTo(inputForm);
-        send.appendTo(inputForm);
+            var send = $("<button type='submit'>").text("Send Message");
+            inputField.appendTo(inputForm);
+            send.appendTo(inputForm);
 
-        var ping = $("<button type='button'>").text("Placeholder Ping");
-        ping.appendTo(inputForm);
+            var ping = $("<button type='button'>").text("Placeholder Ping");
+            ping.appendTo(inputForm);
 
-        inputForm.appendTo(chatDiv);
-        chatDiv.appendTo(document.body);
+            inputForm.appendTo(chatDiv);
+            chatDiv.appendTo(document.body);
 
-        // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
+            // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
 
-        send.on("click", function(e){
-            e.preventDefault();
+            send.on("click", function(e){
+                e.preventDefault();
 
-            if ($("#input-field").val() != ''){
-                var newMessage = $("#input-field").val();
-                // alert("debugging: " + newMessage);
-            
-                // forcibly clear input field
-                $("#input-field").val('');
-
-                // for timestamp -- learn how to do this with firebase epoch conversions
-                var today = new Date();
-
-                var hours = today.getHours().toString();
-                var mins = today.getMinutes().toString();
-                var secs = today.getSeconds().toString();
-
-                // Time formatting
-                if (hours.length != 2){
-                    hours = "0" + hours;
-                }
-
-                if (mins.length != 2) {
-                    mins = "0" + mins;
-                }
+                if ($("#input-field").val() != ''){
+                    var newMessage = $("#input-field").val();
+                    // alert("debugging: " + newMessage);
                 
-                if (secs.length != 2) {
-                    secs = "0" + secs;
+                    // forcibly clear input field
+                    $("#input-field").val('');
+
+                    // for timestamp -- learn how to do this with firebase epoch conversions
+                    var today = new Date();
+
+                    var hours = today.getHours().toString();
+                    var mins = today.getMinutes().toString();
+                    var secs = today.getSeconds().toString();
+
+                    // Time formatting
+                    if (hours.length != 2){
+                        hours = "0" + hours;
+                    }
+
+                    if (mins.length != 2) {
+                        mins = "0" + mins;
+                    }
+                    
+                    if (secs.length != 2) {
+                        secs = "0" + secs;
+                    }
+
+                    var time = hours + ":" + mins + ":" + secs;
+                    
+                    database.ref(myRegion + "/").push({ 
+                        username: username,
+                        message: newMessage,
+                        timestamp: time,
+                    });
+    
+                    $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                 }
 
-                var time = hours + ":" + mins + ":" + secs;
-                
-                database.ref(myRegion + "/").push({ 
-                    username: username,
-                    message: newMessage,
-                    timestamp: time,
-                });
-  
-                $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
-            }
+                // if ping button is clicked, add some rob code 
+                // message becomes the google api maps image instead of txt
 
-            // if ping button is clicked, add some rob code 
-            // message becomes the google api maps image instead of txt
-
-        }); //end send
+            }); //end send
 
         database.ref().on("value", function(snapshot) {
             // everytime this fires, empty the chat
@@ -176,8 +176,8 @@
 
             // automatically scroll chat-history div every time database is changed 
             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
-        });
-    }); // end region
+            });
+        }); // end region
 
     </script>
 </body>
