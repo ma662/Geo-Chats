@@ -12,11 +12,30 @@
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
 </head>
 <body>
+    <style>
+        #chat-history {
+            background-color: rgba(105, 90, 205, 0.418);
+            color: darkgreen;
+
+            border: 2px solid sienna;
+            width: 300px;
+            height: 250px;
+
+            overflow: scroll;
+        }
+    </style>
     <script>
+
+        // NOTES: 
+        // When should we poll user location initially? When chatorom is selected? Upon login?
+
+        // To do: 
+            // change 
+
         var debugVar = null;
 
         // Chat Variables
-        var keyArr = [];
+        //var keyArr = []; NOt sure if needed
 
         var username = "nikobtristam"; // pull this from login database
 
@@ -33,8 +52,8 @@
 
         var database = firebase.database();
 
-        var chatDiv = $("<div>");
-        var chatHistory = $("<div>");
+        var chatDiv = $("<div id='chat-div'>");
+        var chatHistory = $("<div id='chat-history'>");
         chatHistory.appendTo(chatDiv);
 
         // Things for Input
@@ -50,6 +69,8 @@
         inputForm.appendTo(chatDiv);
         chatDiv.appendTo(document.body);
 
+        // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
+
         send.on("click", function(e){
             e.preventDefault();
 
@@ -60,45 +81,47 @@
                 // forcibly clear input field
                 $("#input-field").val('');
 
-                // for timestamp
+                // for timestamp -- learn how to do this with firebase epoch conversions
                 var today = new Date();
-                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                // Get a key for a new Post.
-                // var newPostKey = firebase.database().ref().child('testing').push().key;
+                var hours = today.getHours().toString();
+                var mins = today.getMinutes().toString();
+                var secs = today.getSeconds().toString();
+
+                // Time formatting
+                if (hours.length != 2){
+                    hours = "0" + hours;
+                }
+
+                if (mins.length != 2) {
+                    mins = "0" + mins;
+                }
                 
-                var messageKey = database.ref('testing/').push({
+                if (secs.length != 2) {
+                    secs = "0" + secs;
+                }
+
+                var time = hours + ":" + mins + ":" + secs;
+                
+                // var messageKey =   // not sure if i need this
+
+                database.ref('testing/').push({ // TESTING needs to be changed :/
                     username: username,
                     message: newMessage,
                     timestamp: time,
-                }).key;
-                console.log(messageKey);
+                })
+                //.key
+                ;
 
-                keyArr.push(messageKey);
+                //console.log(messageKey);
+
+                // keyArr.push(messageKey);
             }
 
             // if ping button is clicked, add some rob code 
             // message becomes the google api maps image instead of txt
-            
-
-
-
-            // // Listener function
-            // database.ref('testing/').value()
-
-            // database.ref('testing/').on("child_added", function(childSnapshot) {
-            //     console.log(childSnapshot.val().username);
-            //     console.log(childSnapshot.val().message);
-            //     console.log(childSnapshot.val().timestamp);
-
-            //     var msg = $("<p>").text(childSnapshot.val().username + ' ' + childSnapshot.val().message + " at " + childSnapshot.val().timestamp);
-            //     msg.appendTo(chatHistory);
-            // });
-
 
         }); //end send
-
-
 
         database.ref().on("value", function(snapshot) {
             chatHistory.empty();
