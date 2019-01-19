@@ -118,7 +118,7 @@
 
                 var time = hours + ":" + mins + ":" + secs;
                 
-                database.ref(myRegion + "/").push({ // TESTING needs to be changed :/
+                database.ref(myRegion + "/").push({ 
                     username: username,
                     message: newMessage,
                     timestamp: time,
@@ -145,8 +145,21 @@
                 var thisKey = Object.keys(snapshot.val()[myRegion])[i];
                 console.log(thisKey);
                 
-                var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': ' + snapshot.val()[myRegion][thisKey].message + ' at ' + snapshot.val()[myRegion][thisKey].timestamp);
-                console.log(thisMsg.text());
+                // message formatting (for demonstration)
+                var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
+
+                // // set up styling hooks 
+                // var thisMsg = $("<div>").addClass("messages");
+                
+                // var uName = $("<p>").attr("id", "sender").text(snapshot.val()[myRegion][thisKey].username);
+                // var payload = $("<p>").attr("id", "payload").text(snapshot.val()[myRegion][thisKey].message);
+                // var ts = $("<p>").attr("id", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
+
+                // thisMsg.append(uName);
+                // thisMsg.append(payload);
+                // thisMsg.append(ts);
+                
+                // console.log(thisMsg.text());
 
                 thisMsg.appendTo(chatHistory);
             }
@@ -160,6 +173,8 @@
             // $("#chat-history").text(snapshot.val().clickCount);
             // }, function(errorObject) {
             // console.log("The read failed: " + errorObject.code);
+
+            // automatically scroll chat-history div every time database is changed 
             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
         });
     }); // end region
