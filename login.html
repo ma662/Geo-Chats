@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <title>Geo-Chats Login Page</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+
+    <div id="input-div">
+        <form id="input-form">
+            <label>Username: </label><input id="username" type="text">
+            <label>Password: </label><input id="pass" type="text">
+        </form>
+    </div>
+    
+</body>
+
+<script>
+    $("<div>").attr("id", "input-div").appendTo(document.body);
+    $("<form>").attr("id", "input-form").appendTo($("#input-div"));
+
+    var uName = $("<input type='text'>");
+    $("<label>").text("Username").appendTo(uName);
+    var uPass = $("<input type='text'>").appendTo("#input-form");
+
+    uName.append($("<label>").text("Username"));
+    // uPass.append($("<label>").text("Password"));
+
+    uName.appendTo("#input-form");
+    
+    $("<button>").text("Login").attr("id", "login").appendTo($("#input-form"));
+    $("<button>").text("Sign Up").attr("id", "sign-up").appendTo($("#input-form"));
+
+    $("#login").on("click", function() {
+
+    });
+</script>
+</html>
