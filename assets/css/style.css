@@ -1,21 +1,9 @@
-/*
-    DEMO STYLE
-*/
+
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-/* chatroom messaging css from miles
-#chat-history {
-    background-color: rgba(105, 90, 205, 0.418);
-    color: darkgreen;
-
-    border: 2px solid sienna;
-    width: 100%;
-    height: 250px;
-
-    overflow: scroll;
-} */
 
 body {
+    width: 100%;
     font-family: 'Poppins', sans-serif;
     background: white;
 }
@@ -142,8 +130,8 @@ a[aria-expanded="true"]::before {
 
 ul ul a {
     font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #363D50;
+    padding-left: 10px !important;
+    /* background: #363D50; */
 }
 
 ul.CTAs {
@@ -167,6 +155,25 @@ a.article, a.article:hover {
     background: #6d7fcc !important;
     color: #fff !important;
 }
+
+/* ---------------------------------------------------
+    container2 STYLE
+----------------------------------------------------- */
+#container2 {
+    width: 800px;
+    position: absolute;
+    margin-left: 800px;
+
+}
+.chat-div {
+    padding-left: 800px;
+    margin-left: 800px;
+}
+
+.chat-history{
+    margin-left: 800px;
+}
+
 
 
 
