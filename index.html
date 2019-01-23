@@ -145,7 +145,7 @@
                     var inputField = $("<input type='text'>");
                     inputField.attr("id", "input-field");
 
-                    var send = $("<button type='submit'>").text("Send Message");
+                    var send = $("<button type='submit' id='submit'>").text("Send Message");
                     inputField.appendTo(inputForm);
                     send.appendTo(inputForm);
 
@@ -239,21 +239,12 @@
                             // message formatting (for demonstration)
                             // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
 
-<<<<<<< HEAD
-                            // // set up styling hooks 
-                            var thisMsg = $("<div>").addClass("messages");
-
-                            var uName = $("<p>").attr("class", "sender").text(snapshot.val()[myRegion][thisKey].username);
-                            var payload = $("<p>").attr("class", "payload").text(snapshot.val()[myRegion][thisKey].message);
-                            var ts = $("<p>").attr("class", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
-=======
                             // set up styling hooks 
                             var thisMsg = $("<div>").addClass("messages");
 
                             var uName = $("<p>").attr("id", "sender").text(snapshot.val()[myRegion][thisKey].username);
                             var payload = $("<p>").attr("id", "payload").text(snapshot.val()[myRegion][thisKey].message);
                             var ts = $("<p>").attr("id", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
->>>>>>> e7936f65668ffdfa994a24ce0c4243e07ab353e0
 
                             thisMsg.append(uName);
                             thisMsg.append(payload);
