@@ -170,25 +170,7 @@
 
                     function whatTime() {
                         var today = new Date();
-
-                        var hours = today.getHours().toString();
-                        var mins = today.getMinutes().toString();
-                        var secs = today.getSeconds().toString();
-
-                        // Time formatting
-                        if (hours.length != 2) {
-                            hours = "0" + hours;
-                        }
-
-                        if (mins.length != 2) {
-                            mins = "0" + mins;
-                        }
-
-                        if (secs.length != 2) {
-                            secs = "0" + secs;
-                        }
-
-                        var time = hours + ":" + mins + ":" + secs;   
+                        var time = today.toLocaleTimeString()
 
                         return time;                     
                     }
