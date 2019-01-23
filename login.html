@@ -22,29 +22,34 @@
 
 <script>
 
-    // technologeis
-    // problems we saw
-    // problems we still have 
-    // future enhancements
-    // things that are still incomplete
+    // PRESENTATION NOTES: 
+        // technologeis
+        // problems we saw
+        // problems we still have 
+        // future enhancements
+        // things that are still incomplete
 
-    
-    // 
-    $("<div>").attr("id", "input-div").appendTo(document.body);
+    // append input-div to body, input-form to input-div
+    // $("<div>").attr("id", "input-div").appendTo(document.body);
     $("<form>").attr("id", "input-form").appendTo($("#input-div"));
 
-    var uName = $("<input type='text'>");
-    var uPass = $("<input type='text'>").appendTo("#input-form");
-
-    uName.append($("<label>").text("Username"));
-
-    uName.appendTo("#input-form");
     
-    $("<button>").text("Login").attr("id", "login").appendTo($("#input-form"));
+    // append sign-up, login buttons
+    $("<button>").text("Login").attr("id", "login").appendTo("#input-form");
     $("<button>").text("Sign Up").attr("id", "sign-up").appendTo($("#input-form"));
 
     $("#login").on("click", function() {
+    // get vals of uName and uPass
+        var uName = $("#username").val();
+        var uPass = $("#pass").val();
 
+        alert(uName + '\n' + uPass);
+        // push to database
+        
+
+        // check if user and password exist
+
+        // if flag passes, move to main index, else, alert that login was not good
     });
 </script>
 </html>
