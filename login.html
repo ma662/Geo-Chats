@@ -55,18 +55,34 @@
 
         // _confFlag = true;
 
-        $("<label>").text("Confirm Password").appendTo("#input-form");
+        $("<label>").text("Confirm Password: ").appendTo("#input-form");
         var confPass = $("<input type='text'>").attr("id", "conf-pass").appendTo("#input-form");
 
-        var uName = $("#username").val();
-        var uPass = $("#pass").val();
-        var confPass = $("#conf-pass").val();
+        $("<button id='sign-up-for-real'>").text("Sign Up For Real").appendTo("#input-form");
 
-        database.ref().on("value", function(snapshot) {
-
+        $("#sign-up-for-real").on("click", function() {
+            var uName = $("#username").val();
+            var uPass = $("#pass").val();
+            var confPass = $("#conf-pass").val();
+            var request = "sign-in"; 
+            
+            database.ref("users/").push({
+                username: uName,
+                pass: uPass,
+                confPass: confPass,
+                requestType: request,
+            });
         });
 
-        alert(uName);
+
+        // if user is not in the database already : 
+        // if ()
+            
+        // });
+
+        
+        // FOR LOGGED IN
+        //_isLogged: true,        
 
         $("#username").val('');
         $("#pass").val('');
