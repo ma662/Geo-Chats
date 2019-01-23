@@ -75,7 +75,7 @@
                 </div>
             </nav>
 
-            <h2>New Way to Chat With people in your location</h2>
+            <h2>A new way to Chat With people in your location</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
                 ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
@@ -85,7 +85,6 @@
 
             <div class="line"></div>
             <div id="border">
-
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -94,20 +93,6 @@
                     dolore
                     eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
                     deserunt mollit anim id est laborum.</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
 
             <div class="line"></div>
@@ -169,9 +154,9 @@
 
                     var inputField = $("<input type='text'>");
                     inputField.attr("id", "input-field");
+                    inputField.appendTo(inputForm);
 
                     var send = $("<button type='submit'>").text("Send Message");
-                    inputField.appendTo(inputForm);
                     send.appendTo(inputForm);
 
                     var ping = $("<button type='button' id='ping'>").text("🌎");
@@ -205,7 +190,7 @@
 
                         return time;                     
                     }
-                    
+
                     // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
                     send.on("click", function (e) {
                         e.preventDefault();
@@ -217,6 +202,7 @@
                             $("#input-field").val('');
 
                             var time = whatTime();
+                            console.log(time);
 
                             database.ref(myRegion + "/").push({
                                 username: username,
@@ -228,22 +214,25 @@
                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                         }
 
-                        // on id ping button click
-                        $("#ping").on("click", function(){
-                            
-                            // generate time with time function
-                            var time = whatTime();
-
-                            // push to database formatted message
-                            // message should be the api's response when you find your own location. it will send into the messaging database. 
-                            database.ref(myRegion + "/").push({
-                                username: username,
-                                message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
-                                timestamp: time,
-                                type: "ping",
-                            });
-                        });
+                      
                     }); //end send
+                    
+                    // on id ping button click
+                    $("#ping").on("click", function(){
+                        
+                        // generate time with time function
+                        var time = whatTime();
+                        alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
+
+                        // push to database formatted message
+                        // message should be the api's response when you find your own location. it will send into the messaging database. 
+                        database.ref(myRegion + "/").push({
+                            username: username,
+                            message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
+                            timestamp: time,
+                            type: "ping",
+                        });
+                    });
 
                     // chat message updater
                     database.ref().on("value", function (snapshot) {
@@ -267,16 +256,16 @@
                             // set up styling hooks 
                             var thisMsg = $("<div>").addClass("messages");
 
-                            var uName = $("<p>").attr("id", "sender").text(snapshot.val()[myRegion][thisKey].username);
-                            var payload = $("<p>").attr("id", "payload").text(snapshot.val()[myRegion][thisKey].message);
-                            var ts = $("<p>").attr("id", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
+                            var uName = snapshot.val()[myRegion][thisKey].username;
+                            $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
 
-                            thisMsg.append(uName);
-                            thisMsg.append(payload);
-                            thisMsg.append(ts);
+                            var payload = snapshot.val()[myRegion][thisKey].message;
+                            $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
+
+                            var ts = snapshot.val()[myRegion][thisKey].timestamp;
+                            $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
 
                             // console.log(thisMsg.text());
-
                             thisMsg.appendTo(chatHistory);
                         }
 
