@@ -113,6 +113,27 @@
             <div class="line"></div>
 
             <!-- Region chatroom testing -->
+
+            <!-- Example Style Template -->
+            <style>
+                #sender {
+                    color: white;
+                }
+                
+                #payload {
+                    margin-top: -15px;
+                    margin-left: 18px;
+                }
+                
+                #timestamp {
+                    margin-top: -15px;
+                    float: right;
+                    margin-right: 4em;
+                    font-size: 0.65em;
+                    font-weight: bolder;
+                    color: gray;
+                }
+            </style>
             <script>
                 var myRegion = null;
                 var debugVar = null;
@@ -240,12 +261,9 @@
                             // // set up styling hooks 
                             var thisMsg = $("<div>").addClass("messages");
 
-                            var uName = $("<p>").attr("class", "sender").text(snapshot.val()[myRegion][thisKey].username);
-                            var payload = $("<p>").attr("class", "payload").text(snapshot.val()[myRegion][thisKey].message);
-                            var ts = $("<p>").attr("class", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
-                            
-                            // set up styling hooks 
-                            var thisMsg = $("<div>").addClass("messages");
+                            // var uName = $("<p>").attr("class", "sender").text(snapshot.val()[myRegion][thisKey].username);
+                            // var payload = $("<p>").attr("class", "payload").text(snapshot.val()[myRegion][thisKey].message);
+                            // var ts = $("<p>").attr("class", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
 
                             var uName = snapshot.val()[myRegion][thisKey].username;
                             $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
