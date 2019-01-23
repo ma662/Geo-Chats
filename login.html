@@ -29,15 +29,14 @@
     // things that are still incomplete
 
     
+    // 
     $("<div>").attr("id", "input-div").appendTo(document.body);
     $("<form>").attr("id", "input-form").appendTo($("#input-div"));
 
     var uName = $("<input type='text'>");
-    $("<label>").text("Username").appendTo(uName);
     var uPass = $("<input type='text'>").appendTo("#input-form");
 
     uName.append($("<label>").text("Username"));
-    // uPass.append($("<label>").text("Password"));
 
     uName.appendTo("#input-form");
     
