@@ -5,16 +5,31 @@
     <title>Geolocation Test</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Google API Key -->
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyAOKpdCN5cXgEoKrBnRlg3M72BrOnAty_0"></script>
     <script rel="text/javascript" src="./assets/api/pubnub.js"></script>
+    <style>
+        #map {
+            display: none;
+            width: 500px;
+            height: 500px;
+        }
+    </style>
 </head>
 
 <body>
-    <button id="get-location">Click Me!</button>
+    <button id="location">Show My Location</button>
+
+    <br><br>
+
+    <div id="map"></div>
+    <p id="error"></p>
 </body>
 <script>
     // Test GPS API
     // Location button click
-    $("#get-location").on("click", function () {
+    $("#location").on("click", function () {
         $('#map').css('display', 'block');
 
         // ipdata API Key
@@ -30,7 +45,7 @@
             var userLatitude = response.latitude;
             var userLongitude = response.longitude;
             console.log(userCity, userRegion, userLatitude, userLongitude);
-        });
+        })
     });
 
     // Function for google API
