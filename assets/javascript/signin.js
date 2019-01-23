@@ -1,13 +1,13 @@
 var uiConfig = {
-    signInSuccessUrl: '<url-to-redirect-to-on-success>',
+    signInSuccessUrl: '<file:///Users/cnikolinka/Desktop/Geo-Chats/index.html>',
     signInOptions: [
      firebase.auth.EmailAuthProvider.PROVIDER_ID
     ],
     // Terms of service url/callback.
-    tosUrl: '<your-tos-url>',
+    tosUrl: '<https://www.google.com>',
     // Privacy policy url/callback.
     privacyPolicyUrl: function() {
-      window.location.assign('<your-privacy-policy-url>');
+      window.location.assign('<https://www.google.com>');
     }
   };
   // Initialize the FirebaseUI Widget using Firebase.
@@ -26,6 +26,8 @@ var config = {
     messagingSenderId: "497085812892"
 };
 firebase.initializeApp(config);
+
+
 
 var firebase = require('firebase');
 var firebaseui = require('firebaseui');
