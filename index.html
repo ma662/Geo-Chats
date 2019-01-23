@@ -180,48 +180,64 @@
                     inputForm.appendTo(chatDiv);
                     chatDiv.appendTo("#border");
 
-                    // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
 
+                    function whatTime() {
+                        var today = new Date();
+
+                        var hours = today.getHours().toString();
+                        var mins = today.getMinutes().toString();
+                        var secs = today.getSeconds().toString();
+
+                        // Time formatting
+                        if (hours.length != 2) {
+                            hours = "0" + hours;
+                        }
+
+                        if (mins.length != 2) {
+                            mins = "0" + mins;
+                        }
+
+                        if (secs.length != 2) {
+                            secs = "0" + secs;
+                        }
+
+                        var time = hours + ":" + mins + ":" + secs;   
+
+                        return time;                     
+                    }
+                    
+                    // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
                     send.on("click", function (e) {
                         e.preventDefault();
 
                         if ($("#input-field").val() != '') {
                             var newMessage = $("#input-field").val();
-                            // alert("debugging: " + newMessage);
 
                             // forcibly clear input field
                             $("#input-field").val('');
 
-                            // for timestamp -- learn how to do this with firebase epoch conversions
-                            var today = new Date();
-
-                            var hours = today.getHours().toString();
-                            var mins = today.getMinutes().toString();
-                            var secs = today.getSeconds().toString();
-
-                            // Time formatting
-                            if (hours.length != 2) {
-                                hours = "0" + hours;
-                            }
-
-                            if (mins.length != 2) {
-                                mins = "0" + mins;
-                            }
-
-                            if (secs.length != 2) {
-                                secs = "0" + secs;
-                            }
-
-                            var time = hours + ":" + mins + ":" + secs;
+                            var time = whatTime();
 
                             database.ref(myRegion + "/").push({
                                 username: username,
                                 message: newMessage,
                                 timestamp: time,
+                                type: "message",
                             });
 
                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                         }
+
+                        $("#ping").on("click", function(){
+                            var time = whatTime();
+
+                            database.ref(myRegion + "/").push({
+                                username: username,
+                                message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
+                                timestamp: time,
+                                type: "ping",
+                            });
+                        });
 
                         // if ping button is clicked, add some rob code 
                         // message becomes the google api maps image instead of txt
