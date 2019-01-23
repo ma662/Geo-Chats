@@ -20,7 +20,20 @@
     
 </body>
 
-<script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+        authDomain: "geo-chats.firebaseapp.com",
+        databaseURL: "https://geo-chats.firebaseio.com",
+        projectId: "geo-chats",
+        storageBucket: "geo-chats.appspot.com",
+        messagingSenderId: "157534175404"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
 
     // PRESENTATION NOTES: 
         // technologeis
@@ -33,10 +46,33 @@
     // $("<div>").attr("id", "input-div").appendTo(document.body);
     $("<form>").attr("id", "input-form").appendTo($("#input-div"));
 
-    
     // append sign-up, login buttons
     $("<button>").text("Login").attr("id", "login").appendTo("#input-form");
     $("<button>").text("Sign Up").attr("id", "sign-up").appendTo($("#input-form"));
+
+    $("#sign-up").on("click", function(e) {
+        e.preventDefault();
+
+        // _confFlag = true;
+
+        $("<label>").text("Confirm Password").appendTo("#input-form");
+        var confPass = $("<input type='text'>").attr("id", "conf-pass").appendTo("#input-form");
+
+        var uName = $("#username").val();
+        var uPass = $("#pass").val();
+        var confPass = $("#conf-pass").val();
+
+        database.ref().on("value", function(snapshot) {
+
+        });
+
+        alert(uName);
+
+        $("#username").val('');
+        $("#pass").val('');
+        $("#conf-pass").val('');
+
+    });
 
     $("#login").on("click", function() {
     // get vals of uName and uPass
