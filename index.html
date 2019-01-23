@@ -81,18 +81,16 @@
 
 
             <div class="line"></div>
-                <div id="border">
+            <div id="border">
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                            deserunt mollit anim id est laborum.</p>
-
-
-
-
-
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore
+                    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
 
 
 
@@ -102,10 +100,23 @@
 
 
 
-                </div>
+
 
 
                 
+
+            </div>
+
+            <div class="line"></div>
+
+            <button id="location">Show My Location</button>
+
+            <br><br>
+
+            <div id="map"></div>
+            <p id="error"></p>
+
+
 
             <div class="line"></div>
 
@@ -260,6 +271,69 @@
                 }); // end region
 
             </script>
+
+            <!-- Adding in GPS API to Webpage -->
+            <script>
+                // Test GPS API
+                // Location button click
+                $("#location").on("click", function () {
+                    $('#map').css('display', 'block');
+
+                    // ipdata API Key
+                    var queryURL = "https://api.ipdata.co/?api-key=dbd74d08fb61a09922523a741a0c6feea9c5a1f578aeaf124dfe7cd9";
+
+                    // Function to create/send the API call or request
+                    $.ajax({
+                        url: queryURL,
+                        method: "GET"
+                    }).then(function (response) {
+                        var userCity = response.city;
+                        var userRegion = response.region;
+                        var userLatitude = response.latitude;
+                        var userLongitude = response.longitude;
+                        console.log(userCity, userRegion, userLatitude, userLongitude);
+                    })
+                });
+
+                // Function for google API
+                function geolocationSuccess(position) {
+                    var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    var myOptions = {
+                        zoom: 14,
+                        center: userLatLng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    // Draw the map
+                    var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
+
+                    // Place the marker
+                    new google.maps.Marker({
+                        map: mapObject,
+                        position: userLatLng
+                    });
+                }
+
+                function geolocationError(positionError) {
+                    document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+                }
+
+                function geolocateUser() {
+                    if (navigator.geolocation) {
+                        var positionOptions = {
+                            enableHighAccuracy: true,
+                            timeout: 10 * 1000
+                        };
+                        navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
+                    }
+                    else
+                        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+                }
+
+                window.onload = geolocateUser;
+                // End GPS API
+
+            </script>
+
         </div>
     </div>
 
