@@ -1,17 +1,63 @@
 /* chatroom messaging css from miles */
 #chat-history {
-    background-color: rgba(105, 90, 205, 0.418);
-    color: darkgreen;
-
-    border: 2px solid sienna;
+    /* background-color: rgba(0,0,0,0.5); */
+    background-color: #153c63;
+    background-color: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    background-color: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    color: white;
+    border-radius: 15px;
     width: 100%;
     height: 500px;
-    padding-left: 60px;
+    padding-left: 30px;
     overflow: scroll;
+    border: 10px #7F7FD5;
 }
 
 #map {
     display: none;
     width: 250px;
     height: 250px;
+}
+/* senders message color and style */
+.payload {
+    margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 10px;
+	border-radius: 25px;
+	background-color: #82ccdd;
+	padding: 10px;
+    position: relative;
+    width: 25%;
+}
+
+.timestamp {
+	color: rgba(255,255,255,0.5);
+	font-size: 10px;
+}
+
+.sender {
+    color: white;
+	font-size: 15px;
+}
+
+#input-field {
+    
+        background-color: rgba(0,0,0,0.3) !important;
+    	border: 0;
+        color:white;
+    	height: 40px;
+        overflow-y: auto;
+        width: 50%;
+        box-shadow: none;
+        outline: 0px;
+        border-radius: 15px;
+           
+}
+
+.submit {
+    border-radius: 0 15px 15px 0 !important;
+	background-color: rgba(0,0,0,0.3) !important;
+			border:0 !important;
+			color: white !important;
+			cursor: pointer;
 }
