@@ -2,7 +2,7 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
 
-.border {
+#border {
     border: 2px solid #dedede;
   background-color: #f1f1f1;
   border-radius: 5px;
