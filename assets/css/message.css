@@ -12,6 +12,12 @@
 
 #map {
     display: none;
-    width: 250px;
-    height: 250px;
+    width: 500px;
+    height: 500px;
+    margin: 2vw;
+}
+
+#static-map {
+    display: none;
+    margin: 2vw;
 }
