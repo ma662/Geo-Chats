@@ -74,7 +74,7 @@
 
                     </ul>
                     <a href="about.html">About Us</a>
-                    <a href="login.html">Logout</a>
+                    <a href="login.html" id="logout">Logout</a>
                 </li>
         </nav>
 
@@ -122,6 +122,9 @@
                     if (loggedIn != "true") {
                         window.open("./login.html"); // open login page
                     }
+                    $("#logout").on("click", function() {
+                        localStorage.clear();
+                    });
                 });
 
                 var myRegion = null;
