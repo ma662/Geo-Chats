@@ -63,12 +63,8 @@
                 <li class="active">
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <button class="region" id="region:jersey-city" name="NJ">
-                            <li><a href="#">Jersey City</a></li>
-                        </button>
-                        <button class="region" id="region:new-york-city" name="NY">
-                            <li><a href="#">New York</a></li>
-                        </button>
+                            <li class="region" id="region:jersey-city" name="NJ"><a href="#">Jersey City</a></li>
+                            <li class="region" id="region:new-york-city" name="NY"><a href="#">New York</a></li>
                     </ul>
                     <a href="about.html">About Us</a>
                 </li>
@@ -104,8 +100,10 @@
                 var myRegion = null;
                 var debugVar = null;
 
+                // $("#name-display").text(sessionStorage.getItem("name"));
 
-                var username = prompt("Please enter a username"); // pull this from login database
+                var username = localStorage.getItem('username');//prompt("Please enter a username"); // pull this from login database
+                console.log(username);
 
                 var username = sessionStorage.getItem("username"));
 
@@ -116,12 +114,6 @@
                     myRegion = this.id;
                     console.log(myRegion);
 
-
-                    // NOTES: 
-                    // Need region poll upon clicking on region button
-
-                    // To do: 
-                    // username gets linked by nikki user db
 
                     // Initialize Firebase for Messaging 
                     var config = {
@@ -150,7 +142,7 @@
                     var send = $("<button type='submit' id='submit'>").text("| Send Message");
                     send.appendTo(inputForm);
 
-                    var ping = $("<button type='button' id='ping'>").text("🌎|");
+                    var ping = $("<button type='button' id='location'>").text("🌎|");
                     ping.appendTo(inputForm);
 
                     inputForm.appendTo(chatDiv);
