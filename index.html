@@ -32,22 +32,23 @@
 </head>
 
 <body>
-<!-- Modal -->
-<div id="myModal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+                </div>
+                <div class="modal-body">
+                    You are not located in that Region. Please try another option. Thank you!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body">
-              You are not located in that Region. Please try another option. Thank you!
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
     <div class="wrapper">
         <!-- Sidebar Holder -->
@@ -62,10 +63,10 @@
                 <li class="active">
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <button class="region" id="NJ">
-                            <li><a href="#">New Jersey</a></li>
+                        <button class="region" id="region:jersey-city" name="NJ">
+                            <li><a href="#">Jersey City</a></li>
                         </button>
-                        <button class="region" id="NY">
+                        <button class="region" id="region:new-york-city" name="NY">
                             <li><a href="#">New York</a></li>
                         </button>
                     </ul>
@@ -176,7 +177,7 @@
                             // Chat Room --------------------------------------------------------------------------
 
                             $(".region").on("click", function () {
-                                var myRegion = this.id;
+                                var myRegion = this.name;
                                 console.log(myRegion);
                                 // (ROB STUFF - Check Location If Region is Bad, No Entry)
                                 if (state != myRegion) {
@@ -227,6 +228,12 @@
                                     inputForm.appendTo(chatDiv);
                                     chatDiv.appendTo("#border");
 
+                                    function whatTime() {
+                                        var today = new Date();
+                                        var time = today.toLocaleTimeString()
+                                        return time;
+                                    }
+
                                     // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
 
                                     send.on("click", function (e) {
@@ -270,10 +277,26 @@
                                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                                         }
 
-                                        // if ping button is clicked, add some rob code 
-                                        // message becomes the google api maps image instead of txt
-
                                     }); //end send
+
+                                    // Ping on click
+                                    ping.on("click", function (e) {
+                                        e.preventDefault();
+                                        if ($("#input-field").val() == '') {
+                                            var mapMessage = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=40.6832037,-74.1108381&zoom=13&size=200x200&maptype=roadmap&markers=color:red%7C40.6832037,-74.1108381&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg'>";
+                                            // forcibly clear input field
+                                            $("#input-field").val('');
+                                            var time = whatTime();
+                                            database.ref(myRegion + "/").push({
+                                                username: username,
+                                                message: mapMessage,
+                                                timestamp: time,
+                                                type: "ping",
+                                            });
+                                            $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                                        }
+
+                                    }); //end ping
 
                                     database.ref().on("value", function (snapshot) {
                                         // everytime this fires, empty the chat
