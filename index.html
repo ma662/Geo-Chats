@@ -164,10 +164,8 @@
                             url: queryURL,
                             method: "GET"
                         }).then(function (response) {
-                            var locality = response.results[6].address_components[0].long_name;
-                            var city = response.results[6].address_components[2].short_name;
-                            var state = response.results[6].address_components[4].short_name;
-                            console.log(state);
+                            var state = response.results[0].address_components[3].short_name;
+                            console.log(state, response.results);
 
                             // Static-Map (different API key)
                             var staticURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + pos.lat + "," + pos.lng + "&zoom=13&size=200x200&maptype=roadmap&markers=color:red%7C" + pos.lat + "," + pos.lng + "&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
