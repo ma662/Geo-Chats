@@ -43,7 +43,7 @@
 <body data-gr-c-s-loaded="true">
 
     <div class="container">
-
+        <h3><img src="assets/images/geo_chat_logo_160.png"></h3>
         <form class="form-signin">
             <h2 class="form-signin-heading">Please sign in</h2>
             <input type="text" id="username" class="form-control" placeholder="Username" required=true autofocus="">
@@ -59,59 +59,59 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
-        <script>
-            // Initialize Firebase
-            var config = {
-                apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
-                authDomain: "geo-chats.firebaseapp.com",
-                databaseURL: "https://geo-chats.firebaseio.com",
-                projectId: "geo-chats",
-                storageBucket: "geo-chats.appspot.com",
-                messagingSenderId: "157534175404"
-            };
-            firebase.initializeApp(config);
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+            authDomain: "geo-chats.firebaseapp.com",
+            databaseURL: "https://geo-chats.firebaseio.com",
+            projectId: "geo-chats",
+            storageBucket: "geo-chats.appspot.com",
+            messagingSenderId: "157534175404"
+        };
+        firebase.initializeApp(config);
 
-            var database = firebase.database();
-            var userRef = database.ref("users/");
+        var database = firebase.database();
+        var userRef = database.ref("users/");
 
-            var activeUser = localStorage.getItem('username');
-            console.log(activeUser);
+        var activeUser = localStorage.getItem('username');
+        console.log(activeUser);
 
-            var debugVar = null;
+        var debugVar = null;
 
 
-            $("#sign-up").on("click", function(e){
+        $("#sign-up").on("click", function (e) {
+            e.preventDefault();
+
+            $("<input type='password' id='conf-pass' class='form-control' placeholder='Confirm Password' required=''>").appendTo('.form-signin');
+            $("#sign-up").remove();
+            $("#sign-in").remove();
+
+            $("<button id='sign-up2' class='btn-primary btn-lg btn-block' type='button'>Create Account</button>").appendTo('.form-signin');
+
+            $("#sign-up2").on("click", function (e) {
                 e.preventDefault();
 
-                $("<input type='password' id='conf-pass' class='form-control' placeholder='Confirm Password' required=''>").appendTo('.form-signin');
-                $("#sign-up").remove();
-                $("#sign-in").remove();
+                var uName = $("#username").val().trim();
+                var uPass = $("#pass").val().trim();
+                var confPass = $("#conf-pass").val().trim();
+                // var request = "sign-up"; 
 
-                $("<button id='sign-up2' class='btn-primary btn-lg btn-block' type='button'>Create Account</button>").appendTo('.form-signin');
+                var _newUserFlag = false; // is user clear for signup?
 
-                $("#sign-up2").on("click", function(e) {
-                    e.preventDefault();
+                var imgArr = []; // array of images to be randomly selected for db pushing
 
-                    var uName = $("#username").val().trim();
-                    var uPass = $("#pass").val().trim();
-                    var confPass = $("#conf-pass").val().trim();
-                    // var request = "sign-up"; 
-
-                    var _newUserFlag = false; // is user clear for signup?
-
-                    var imgArr = []; // array of images to be randomly selected for db pushing
-
-                    // do a database check and execute code within the event
-                    userRef.once("value")
-                    .then(function(snapshot) {
+                // do a database check and execute code within the event
+                userRef.once("value")
+                    .then(function (snapshot) {
                         debugVar = snapshot;
 
                         if (snapshot.hasChild(uName)) {
                             console.log("user tried to sign-up with taken username");
                             _newUserFlag = false;
-                            
+
                             // how do i reload page
-                        } 
+                        }
                         else {
                             _newUserFlag = true;
                         }
@@ -128,7 +128,7 @@
 
                                 alert("Your account was successfully created!");
                                 location.reload();
-                            } 
+                            }
                             else {
                                 alert("Your passwords don't match");
                             }
@@ -138,70 +138,70 @@
                         }
                     });
 
-                    // clear boxes
-                    $("#username").val('');
-                    $("#pass").val('');
-                    $("#conf-pass").val('');
+                // clear boxes
+                $("#username").val('');
+                $("#pass").val('');
+                $("#conf-pass").val('');
 
-                    }); // end #sign-up2 
+            }); // end #sign-up2 
 
-                }); // end #sign-up
+        }); // end #sign-up
 
-                $("#login").on("click", function(e) {
-                    e.preventDefault();
+        $("#login").on("click", function (e) {
+            e.preventDefault();
 
-                    // get vals of uName and uPass
-                    var uName = $("#username").val().trim();
-                    var uPass = $("#pass").val().trim();
+            // get vals of uName and uPass
+            var uName = $("#username").val().trim();
+            var uPass = $("#pass").val().trim();
 
-                    // alert(uName + "\n" + uPass);
+            // alert(uName + "\n" + uPass);
 
-                    if (uName != '') {
-                        userRef.once("value")
-                            .then(function(snapshot) {
-                                debugVar = snapshot;
-                                mySnap = snapshot.val();
+            if (uName != '') {
+                userRef.once("value")
+                    .then(function (snapshot) {
+                        debugVar = snapshot;
+                        mySnap = snapshot.val();
 
-                                // if db doesn't have uName
-                                if (!snapshot.hasChild(uName)){
-                                    alert("Either this username password combination is incorrect or that user doesn't exist.");
+                        // if db doesn't have uName
+                        if (!snapshot.hasChild(uName)) {
+                            alert("Either this username password combination is incorrect or that user doesn't exist.");
 
-                                    // for (var i=0; i<Object.keys(mySnap).length; i++) {
-                                    //     var thisKey = Object.keys(mySnap)[i];
+                            // for (var i=0; i<Object.keys(mySnap).length; i++) {
+                            //     var thisKey = Object.keys(mySnap)[i];
 
-                                    //     var vals = Object.keys(mySnap[thisKey]);
-                                    //     console.log(vals);
+                            //     var vals = Object.keys(mySnap[thisKey]);
+                            //     console.log(vals);
 
-                                    //     var dPass = mySnap[thisKey];
+                            //     var dPass = mySnap[thisKey];
 
-                                }
-                                else {
-                                    // if db does have it, pull snapshot data, see if uPass matches pass of db user
-                                    var comp = mySnap[uName]['pass'];
-                                    console.log(comp);
+                        }
+                        else {
+                            // if db does have it, pull snapshot data, see if uPass matches pass of db user
+                            var comp = mySnap[uName]['pass'];
+                            console.log(comp);
 
-                                    if (uPass === comp) {
-                                        // Clear sessionStorage
-                                        localStorage.clear();
+                            if (uPass === comp) {
+                                // Clear sessionStorage
+                                localStorage.clear();
 
-                                        // Store all content into sessionStorage
-                                        localStorage.setItem("username", uName);
+                                // Store all content into sessionStorage
+                                localStorage.setItem("username", uName);
 
-                                        alert("Login successful");
+                                alert("Login successful");
 
-                                        window.open("./index.html"); // open main page
-                                    }
-                                    else {
-                                        alert("Either this username password combination is incorrect or that user doesn't exist.");
-                                    }
+                                window.open("./index.html"); // open main page
+                            }
+                            else {
+                                alert("Either this username password combination is incorrect or that user doesn't exist.");
+                            }
 
-                                }
-                                $("#username").val('');
-                                $("#pass").val('');
-                        });
-                    }
-                });
-        </script>
+                        }
+                        $("#username").val('');
+                        $("#pass").val('');
+                    });
+            }
+        });
+    </script>
 
 </body>
 

@@ -12,4 +12,48 @@
  @-o-viewport      { width: device-width; }
  @viewport         { width: device-width; }
  
- 
+.container {
+    width: 768px;
+    height: 346px;
+}
+#login {
+    background-color: #39435b;
+}
+
+#sign-up {
+    background-color: #39435b;
+}
+
+ .form-signin-heading {
+     text-align: center;
+     color: white;
+ }
+
+ #username {
+     color: #153c63;
+    text-align: center;
+ }
+
+ #pass {
+     text-align: center;
+ }
+
+
+h3 {
+    text-align: center;
+}
+
+#sign-up2 {
+     background-color: #39434b;
+
+ }
+
+ body {
+    margin-top: 10%;
+    background: #153c63;
+ }
+
+ #conf-pass {
+     text-align: center;
+     color: #153c63;
+ }
