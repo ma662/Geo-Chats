@@ -148,6 +148,11 @@
                 $(".region").on("click", function (e) {
                     e.preventDefault();
 
+                    if (this.id != "region:jersey-city") {
+                        $("#myModal").modal("show");
+                        regionLocked = true;
+                    }
+
                     // alert(var _regionLocked);
                     if (!regionLocked) {
                         console.log(regionLocked);
@@ -252,7 +257,7 @@
                                 timestamp: time,
                                 // type: "ping",
                             });
-                            alert("msgArr sent");
+                            // alert("msgArr sent");
                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                             // }
 
