@@ -114,6 +114,21 @@
 
             <!-- Region chatroom testing -->
             <script>
+                function userValid() {
+                    var loggedIn = localStorage.getItem('log-token');
+                    if (loggedIn === true) {
+                        return loggedIn;
+                    }
+                }
+
+                $(document).ready(function(){
+                    var loggedIn = userValid();
+
+                    if (!loggedIn) {
+                        window.open("./login.html"); // open login page
+                    }
+                });
+
                 var myRegion = null;
                 var debugVar = null;
                 var regionLocked = false;
@@ -122,6 +137,9 @@
 
                 var username = localStorage.getItem('username');//prompt("Please enter a username"); // pull this from login database
                 console.log(username);
+
+                // set up styling tags for activeUser
+                var activeUser = username;
 
                 // var username = sessionStorage.getItem("username"));
 
@@ -236,9 +254,6 @@
 
                             // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
                             for (var i = 0; i < Object.keys(snapshot.val()[myRegion]).length; i++) {
-                                // set up styling tags for activeUser
-                                var activeUser;
-
                                 var thisKey = Object.keys(snapshot.val()[myRegion])[i];
                                 console.log(thisKey);
 
