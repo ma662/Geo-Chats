@@ -104,6 +104,9 @@
 
             </div>
 
+            <div class="line"></div>
+            <button id="ping">Show My Location</button>
+            <br><br>
             <div id="map"></div>
             <div id="static-map"></div>
 
@@ -119,7 +122,7 @@
             var username = prompt("Please enter a username"); // pull this from login database
 
             // Location button click
-            $("#location").on("click", function () {
+            $("#ping").on("click", function () {
                 $('#static-map').css('display', 'block');
             })
 

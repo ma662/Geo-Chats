@@ -17,6 +17,12 @@ p {
     color: black;
 }
 
+.logout {
+    float: right;
+    position: relative;
+    color: #fff;
+}
+
 p light {
     color: gainsboro;
 }

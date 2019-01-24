@@ -53,7 +53,7 @@
         </div>
     </div>
     <!-- end of Modal -->
-    
+
     <div class="wrapper">
         <!-- Sidebar Holder -->
         <nav id="sidebar">
@@ -67,14 +67,14 @@
                 <li class="active">
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <button class="region" id="region:jersey-city" name="NJ">
-                            <li><a href="#">Jersey City</a></li>
-                        </button>
-                        <button class="region" id="region:new-york-city" name="NY">
-                            <li><a href="#">New York</a></li>
-                        </button>
+
+                        <li class="region" id="region:jersey-city" name="NJ"><a href="#">Jersey City</a></li>
+
+                        <li class="region" id="region:new-york-city" name="NY"><a href="#">New York</a></li>
+
                     </ul>
                     <a href="about.html">About Us</a>
+                    <a href="login.html">Logout</a>
                 </li>
         </nav>
 
@@ -91,6 +91,7 @@
                             <span></span>
                         </button>
                     </div>
+                    <a href="login.html" class="logout">Logout</a>
 
                 </div>
             </nav>
@@ -127,150 +128,150 @@
 
                 // $(document).ready(function(){
 
-                    $(".region").on("click", function (e) {
-                        e.preventDefault();
+                $(".region").on("click", function (e) {
+                    e.preventDefault();
 
-                        // alert(var _regionLocked);
-                        if (!regionLocked) {
-                            console.log(regionLocked);
-                            // (ROB STUFF - Check Location If Region is Bad, No Entry)
+                    // alert(var _regionLocked);
+                    if (!regionLocked) {
+                        console.log(regionLocked);
+                        // (ROB STUFF - Check Location If Region is Bad, No Entry)
 
-                            var regionLocked = true;
+                        var regionLocked = true;
 
-                            // else, all loading and storing is based upon a region string
-                            myRegion = this.id;
-                            console.log(myRegion);
+                        // else, all loading and storing is based upon a region string
+                        myRegion = this.id;
+                        console.log(myRegion);
 
-                            // Initialize Firebase for Messaging 
-                            var config = {
-                                apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
-                                authDomain: "geo-chats.firebaseapp.com",
-                                databaseURL: "https://geo-chats.firebaseio.com",
-                                projectId: "geo-chats",
-                                storageBucket: "geo-chats.appspot.com",
-                                messagingSenderId: "157534175404"
-                            };
-                            firebase.initializeApp(config);
+                        // Initialize Firebase for Messaging 
+                        var config = {
+                            apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+                            authDomain: "geo-chats.firebaseapp.com",
+                            databaseURL: "https://geo-chats.firebaseio.com",
+                            projectId: "geo-chats",
+                            storageBucket: "geo-chats.appspot.com",
+                            messagingSenderId: "157534175404"
+                        };
+                        firebase.initializeApp(config);
 
-                            var database = firebase.database();
+                        var database = firebase.database();
 
-                            var chatDiv = $("<div id='chat-div'>");
-                            var chatHistory = $("<div id='chat-history'>");
-                            chatHistory.appendTo(chatDiv);
+                        var chatDiv = $("<div id='chat-div'>");
+                        var chatHistory = $("<div id='chat-history'>");
+                        chatHistory.appendTo(chatDiv);
 
-                            // Things for Input
-                            var inputForm = $("<form>");
+                        // Things for Input
+                        var inputForm = $("<form>");
 
-                            var inputField = $("<input type='text'>").text("Type your message...");
-                            inputField.attr("id", "input-field");
-                            inputField.appendTo(inputForm);
+                        var inputField = $("<input type='text'>").text("Type your message...");
+                        inputField.attr("id", "input-field");
+                        inputField.appendTo(inputForm);
 
-                            var send = $("<button type='submit' id='submit'>").text("| Send Message");
-                            send.appendTo(inputForm);
+                        var send = $("<button type='submit' id='submit'>").text("| Send Message");
+                        send.appendTo(inputForm);
 
-                            var ping = $("<button type='button' id='ping'>").text("🌎|");
-                            ping.appendTo(inputForm);
+                        var ping = $("<button type='button' id='ping'>").text("🌎|");
+                        ping.appendTo(inputForm);
 
-                            inputForm.appendTo(chatDiv);
-                            chatDiv.appendTo("#border");
-
-
-                            function whatTime() {
-                                var today = new Date();
-                                var time = today.toLocaleTimeString()
-
-                                return time;
-                            }
-
-                            // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
-                            send.on("click", function (e) {
-                                e.preventDefault();
-
-                                if ($("#input-field").val() != '') {
-                                    var newMessage = $("#input-field").val();
-
-                                    // forcibly clear input field
-                                    $("#input-field").val('');
-
-                                    var time = whatTime();
-                                    console.log(time);
-
-                                    database.ref(myRegion + "/").push({
-                                        username: username,
-                                        message: newMessage,
-                                        timestamp: time,
-                                        type: "message",
-                                    });
-
-                                    $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
-                                }
+                        inputForm.appendTo(chatDiv);
+                        chatDiv.appendTo("#border");
 
 
-                            }); //end send
+                        function whatTime() {
+                            var today = new Date();
+                            var time = today.toLocaleTimeString()
 
-                            // on id ping button click
-                            $("#ping").on("click", function () {
+                            return time;
+                        }
 
-                                // generate time with time function
+                        // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
+                        send.on("click", function (e) {
+                            e.preventDefault();
+
+                            if ($("#input-field").val() != '') {
+                                var newMessage = $("#input-field").val();
+
+                                // forcibly clear input field
+                                $("#input-field").val('');
+
                                 var time = whatTime();
-                                alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
+                                console.log(time);
 
-                                // push to database formatted message
-                                // message should be the api's response when you find your own location. it will send into the messaging database. 
                                 database.ref(myRegion + "/").push({
                                     username: username,
-                                    message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
+                                    message: newMessage,
                                     timestamp: time,
-                                    type: "ping",
+                                    type: "message",
                                 });
-                            });
 
-                            // chat message updater
-                            database.ref().on("value", function (snapshot) {
-                                // everytime this fires, empty the chat
-                                chatHistory.empty();
-
-                                debugVar = snapshot.val();
-                                // console.log(snapshot.val());
-
-                                // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
-                                for (var i = 0; i < Object.keys(snapshot.val()[myRegion]).length; i++) {
-                                    // set up styling tags for activeUser
-                                    var activeUser;
-
-                                    var thisKey = Object.keys(snapshot.val()[myRegion])[i];
-                                    console.log(thisKey);
-
-                                    // message formatting (for demonstration; deprecatetd)
-                                    // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
-
-                                    // // set up styling hooks 
-                                    var thisMsg = $("<div>").addClass("messages");
-
-                                    var uName = snapshot.val()[myRegion][thisKey].username;
-                                    $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
-
-                                    var payload = snapshot.val()[myRegion][thisKey].message;
-                                    $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
-
-                                    var ts = snapshot.val()[myRegion][thisKey].timestamp;
-                                    $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
-
-                                    // console.log(thisMsg.text());
-                                    thisMsg.appendTo(chatHistory);
-                                }
-
-
-                                // console.log(key);
-                                console.log("I have fired initially or because of a db update");
-
-                                // automatically scroll chat-history div every time database is changed 
                                 $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                            }
+
+
+                        }); //end send
+
+                        // on id ping button click
+                        $("#ping").on("click", function () {
+
+                            // generate time with time function
+                            var time = whatTime();
+                            alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
+
+                            // push to database formatted message
+                            // message should be the api's response when you find your own location. it will send into the messaging database. 
+                            database.ref(myRegion + "/").push({
+                                username: username,
+                                message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
+                                timestamp: time,
+                                type: "ping",
                             });
-                        } else {
-                            alert("You've already selected a region!");
-                        }
-                    }); // end region
+                        });
+
+                        // chat message updater
+                        database.ref().on("value", function (snapshot) {
+                            // everytime this fires, empty the chat
+                            chatHistory.empty();
+
+                            debugVar = snapshot.val();
+                            // console.log(snapshot.val());
+
+                            // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
+                            for (var i = 0; i < Object.keys(snapshot.val()[myRegion]).length; i++) {
+                                // set up styling tags for activeUser
+                                var activeUser;
+
+                                var thisKey = Object.keys(snapshot.val()[myRegion])[i];
+                                console.log(thisKey);
+
+                                // message formatting (for demonstration; deprecatetd)
+                                // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
+
+                                // // set up styling hooks 
+                                var thisMsg = $("<div>").addClass("messages");
+
+                                var uName = snapshot.val()[myRegion][thisKey].username;
+                                $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
+
+                                var payload = snapshot.val()[myRegion][thisKey].message;
+                                $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
+
+                                var ts = snapshot.val()[myRegion][thisKey].timestamp;
+                                $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
+
+                                // console.log(thisMsg.text());
+                                thisMsg.appendTo(chatHistory);
+                            }
+
+
+                            // console.log(key);
+                            console.log("I have fired initially or because of a db update");
+
+                            // automatically scroll chat-history div every time database is changed 
+                            $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                        });
+                    } else {
+                        alert("You've already selected a region!");
+                    }
+                }); // end region
                 // });
 
 
@@ -278,62 +279,62 @@
 
             <!-- Adding in GPS API to Webpage -->
             <script>
-                    // Test GPS API
-                    // Location button click
-                    $("#location").on("click", function () {
-                        $('#map').css('display', 'block');
+                // Test GPS API
+                // Location button click
+                $("#location").on("click", function () {
+                    $('#map').css('display', 'block');
 
-                        // ipdata API Key
-                        var queryURL = "https://api.ipdata.co/?api-key=dbd74d08fb61a09922523a741a0c6feea9c5a1f578aeaf124dfe7cd9";
+                    // ipdata API Key
+                    var queryURL = "https://api.ipdata.co/?api-key=dbd74d08fb61a09922523a741a0c6feea9c5a1f578aeaf124dfe7cd9";
 
-                        // Function to create/send the API call or request
-                        $.ajax({
-                            url: queryURL,
-                            method: "GET"
-                        }).then(function (response) {
-                            var userCity = response.city;
-                            var userRegion = response.region;
-                            var userLatitude = response.latitude;
-                            var userLongitude = response.longitude;
-                            console.log(userCity, userRegion, userLatitude, userLongitude);
-                        })
+                    // Function to create/send the API call or request
+                    $.ajax({
+                        url: queryURL,
+                        method: "GET"
+                    }).then(function (response) {
+                        var userCity = response.city;
+                        var userRegion = response.region;
+                        var userLatitude = response.latitude;
+                        var userLongitude = response.longitude;
+                        console.log(userCity, userRegion, userLatitude, userLongitude);
+                    })
+                });
+
+                // Function for google API
+                function geolocationSuccess(position) {
+                    var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    var myOptions = {
+                        zoom: 14,
+                        center: userLatLng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    // Draw the map
+                    var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
+
+                    // Place the marker
+                    new google.maps.Marker({
+                        map: mapObject,
+                        position: userLatLng
                     });
+                }
 
-                    // Function for google API
-                    function geolocationSuccess(position) {
-                        var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                        var myOptions = {
-                            zoom: 14,
-                            center: userLatLng,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                function geolocationError(positionError) {
+                    document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+                }
+
+                function geolocateUser() {
+                    if (navigator.geolocation) {
+                        var positionOptions = {
+                            enableHighAccuracy: true,
+                            timeout: 10 * 1000
                         };
-                        // Draw the map
-                        var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
-
-                        // Place the marker
-                        new google.maps.Marker({
-                            map: mapObject,
-                            position: userLatLng
-                        });
+                        navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
                     }
+                    else
+                        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+                }
 
-                    function geolocationError(positionError) {
-                        document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
-                    }
-
-                    function geolocateUser() {
-                        if (navigator.geolocation) {
-                            var positionOptions = {
-                                enableHighAccuracy: true,
-                                timeout: 10 * 1000
-                            };
-                            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
-                        }
-                        else
-                            document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
-                    }
-
-                    window.onload = geolocateUser;
+                window.onload = geolocateUser;
                 // End GPS API
 
             </script>
