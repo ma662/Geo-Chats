@@ -107,6 +107,7 @@
                         });
 
                         alert("Your account was successfully created!");
+                        location.reload();
                     } 
                     else {
                         alert("Your passwords don't match");
@@ -167,14 +168,16 @@
                             sessionStorage.setItem("username", uName);
 
                             alert("Login successful");
+
+                            window.open("./index.html"); // open main page
                         }
                         else {
                             alert("Either this username password combination is incorrect or that user doesn't exist.");
                         }
 
                     }
-                        $("#username").val('');
-                        $("#pass").val('');
+                    $("#username").val('');
+                    $("#pass").val('');
             });
         }
     });
