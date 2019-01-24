@@ -14,7 +14,7 @@
     <div id="input-div">
         <form id="input-form">
             <label>Username: </label><input id="username" type="text">
-            <label>Password: </label><input id="pass" type="text">
+            <label>Password: </label><input id="pass" type="password">
         </form>
     </div>
     
@@ -34,6 +34,9 @@
     firebase.initializeApp(config);
 
     var database = firebase.database();
+    var userRef = database.ref("users/");
+
+    var debugVar = null;
 
     // PRESENTATION NOTES: 
         // technologeis
@@ -45,6 +48,8 @@
     // append input-div to body, input-form to input-div
     // $("<div>").attr("id", "input-div").appendTo(document.body);
     $("<form>").attr("id", "input-form").appendTo($("#input-div"));
+    $("#username").prop("required", true);
+    $('#pass').prop("required", true);
 
     // append sign-up, login buttons
     $("<button>").text("Login").attr("id", "login").appendTo("#input-form");
@@ -55,53 +60,123 @@
 
         // _confFlag = true;
 
-        $("<label>").text("Confirm Password: ").appendTo("#input-form");
-        var confPass = $("<input type='text'>").attr("id", "conf-pass").appendTo("#input-form");
+        $("<label>").text(" Confirm Password: ").appendTo("#input-form");
+        var confPass = $("<input type='password'>").attr("id", "conf-pass").prop("required", true).appendTo("#input-form");
 
         $("<button id='sign-up-for-real'>").text("Sign Up For Real").appendTo("#input-form");
 
-        $("#sign-up-for-real").on("click", function() {
-            var uName = $("#username").val();
-            var uPass = $("#pass").val();
-            var confPass = $("#conf-pass").val();
-            var request = "sign-in"; 
-            
-            database.ref("users/").push({
-                username: uName,
-                pass: uPass,
-                confPass: confPass,
-                requestType: request,
+        // so focus automatically goes to new button
+        $("#login").remove();
+        $("#sign-up").remove();
+
+        $("#sign-up-for-real").on("click", function(e) {
+            e.preventDefault();
+
+            var uName = $("#username").val().trim();
+            var uPass = $("#pass").val().trim();
+            var confPass = $("#conf-pass").val().trim();
+            // var request = "sign-up"; 
+
+            var _newUserFlag = false; // is user clear for signup?
+
+            var imgArr = []; // array of images to be randomly selected for db pushing
+
+            // do a database check and execute code within the event
+            userRef.once("value")
+            .then(function(snapshot) {
+                debugVar = snapshot;
+
+                if (snapshot.hasChild(uName)) {
+                    console.log("user tried to sign-up with taken username");
+                    _newUserFlag = false;
+                    
+                    // how do i reload page
+                } 
+                else {
+                    _newUserFlag = true;
+                }
+
+                // if user is cleared for signup 
+                if (_newUserFlag) {
+                    // uPass and confPass are good
+                    if (uPass === confPass) {
+                        database.ref("users/" + uName + "/").set({
+                            username: uName,
+                            pass: uPass,
+                            // image : image link
+                        });
+
+                        alert("Your account was successfully created!");
+                    } 
+                    else {
+                        alert("Your passwords don't match");
+                    }
+                }
+                else {
+                    alert("That username is taken");
+                }
             });
-        });
 
+            // clear boxes
+            $("#username").val('');
+            $("#pass").val('');
+            $("#conf-pass").val('');
 
-        // if user is not in the database already : 
-        // if ()
-            
-        // });
+        }); // end #sign-up-for-real 
 
-        
-        // FOR LOGGED IN
-        //_isLogged: true,        
+    }); // end #sign-up
 
-        $("#username").val('');
-        $("#pass").val('');
-        $("#conf-pass").val('');
+    $("#login").on("click", function(e) {
+        e.preventDefault();
 
-    });
+        // get vals of uName and uPass
+        var uName = $("#username").val().trim();
+        var uPass = $("#pass").val().trim();
 
-    $("#login").on("click", function() {
-    // get vals of uName and uPass
-        var uName = $("#username").val();
-        var uPass = $("#pass").val();
+        // alert(uName + "\n" + uPass);
 
-        alert(uName + '\n' + uPass);
-        // push to database
-        
+        if (uName != '') {
+            userRef.once("value")
+                .then(function(snapshot) {
+                    debugVar = snapshot;
+                    mySnap = snapshot.val();
 
-        // check if user and password exist
+                    // if db doesn't have uName
+                    if (!snapshot.hasChild(uName)){
+                        alert("Either this username password combination is incorrect or that user doesn't exist.");
 
-        // if flag passes, move to main index, else, alert that login was not good
+                        // for (var i=0; i<Object.keys(mySnap).length; i++) {
+                        //     var thisKey = Object.keys(mySnap)[i];
+
+                        //     var vals = Object.keys(mySnap[thisKey]);
+                        //     console.log(vals);
+
+                        //     var dPass = mySnap[thisKey];
+
+                    }
+                    else {
+                        // if db does have it, pull snapshot data, see if uPass matches pass of db user
+                        var comp = mySnap[uName]['pass'];
+                        console.log(comp);
+
+                        if (uPass === comp) {
+                            // Clear sessionStorage
+                            sessionStorage.clear();
+
+                            // Store all content into sessionStorage
+                            sessionStorage.setItem("username", uName);
+
+                            alert("Login successful");
+                        }
+                        else {
+                            alert("Either this username password combination is incorrect or that user doesn't exist.");
+                        }
+
+                    }
+                        $("#username").val('');
+                        $("#pass").val('');
+            });
+        }
     });
 </script>
 </html>
