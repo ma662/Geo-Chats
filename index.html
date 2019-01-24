@@ -165,8 +165,14 @@
                             url: queryURL,
                             method: "GET"
                         }).then(function (response) {
-                            var state = response.results[3].address_components[4].short_name;
-                            console.log(state, response.results);
+                            var compOne = response.results[0].address_components[0].short_name;
+                            var compTwo = response.results[0].address_components[1].short_name;
+                            var compThree = response.results[0].address_components[2].short_name;
+                            var compFour = response.results[0].address_components[3].short_name;
+                            var compFive = response.results[0].address_components[4].short_name;
+                            var compSix = response.results[0].address_components[5].short_name;
+                            var compSeven = response.results[0].address_components[6].short_name;
+                            console.log(compOne, compTwo, compThree, compFour, compFive, compSix, compSeven, response.results);
 
                             // Static-Map (different API key)
                             var staticURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + pos.lat + "," + pos.lng + "&zoom=13&size=200x200&maptype=roadmap&markers=color:red%7C" + pos.lat + "," + pos.lng + "&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
@@ -180,7 +186,7 @@
                                 var myRegion = this.name;
                                 console.log(myRegion);
                                 // (ROB STUFF - Check Location If Region is Bad, No Entry)
-                                if (state != myRegion) {
+                                if (compOne != myRegion && compTwo != myRegion && compThree != myRegion && compFour != myRegion && compFive != myRegion && compSix != myRegion && compSeven != myRegion) {
                                     $('#myModal').modal('show')
                                 }
                                 else {
