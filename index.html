@@ -114,17 +114,12 @@
 
             <!-- Region chatroom testing -->
             <script>
-                function userValid() {
+                $(document).ready(function() {
                     var loggedIn = localStorage.getItem('log-token');
-                    if (loggedIn === true) {
-                        return loggedIn;
-                    }
-                }
+                    console.log(loggedIn);
+                    console.log(typeof(loggedIn));
 
-                $(document).ready(function(){
-                    var loggedIn = userValid();
-
-                    if (!loggedIn) {
+                    if (loggedIn != "true") {
                         window.open("./login.html"); // open login page
                     }
                 });
@@ -333,9 +328,9 @@
                     });
                 }
 
-                function geolocationError(positionError) {
-                    document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
-                }
+                // function geolocationError(positionError) {
+                //     document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+                // }
 
                 function geolocateUser() {
                     if (navigator.geolocation) {
