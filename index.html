@@ -165,7 +165,7 @@
                             url: queryURL,
                             method: "GET"
                         }).then(function (response) {
-                            var state = response.results[0].address_components[3].short_name;
+                            var state = response.results[3].address_components[4].short_name;
                             console.log(state, response.results);
 
                             // Static-Map (different API key)
@@ -283,7 +283,9 @@
                                     ping.on("click", function (e) {
                                         e.preventDefault();
                                         if ($("#input-field").val() == '') {
-                                            var mapMessage = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=40.6832037,-74.1108381&zoom=13&size=200x200&maptype=roadmap&markers=color:red%7C40.6832037,-74.1108381&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg'>";
+                                            var mapMessage = $('<img>');
+                                            mapMessage.attr('src', staticURL);
+                                            console.log(mapMessage);
                                             // forcibly clear input field
                                             $("#input-field").val('');
                                             var time = whatTime();
