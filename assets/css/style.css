@@ -17,6 +17,11 @@ p {
     color: black;
 }
 
+#uname-display {
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
 .logout {
     float: right;
     position: relative;

@@ -76,6 +76,7 @@
                     <a href="about.html">About Us</a>
                     <a href="login.html" id="logout">Logout</a>
                 </li>
+            </ul>
         </nav>
 
         <!-- Page Content Holder -->
@@ -114,15 +115,15 @@
 
             <!-- Region chatroom testing -->
             <script>
-                $(document).ready(function() {
+                $(document).ready(function () {
                     var loggedIn = localStorage.getItem('log-token');
                     console.log(loggedIn);
-                    console.log(typeof(loggedIn));
+                    console.log(typeof (loggedIn));
 
                     if (loggedIn != "true") {
                         window.open("./login.html"); // open login page
                     }
-                    $("#logout").on("click", function() {
+                    $("#logout").on("click", function () {
                         localStorage.clear();
                     });
                 });
@@ -226,21 +227,34 @@
                         }); //end send
 
                         // on id ping button click
-                        $("#ping").on("click", function () {
+                        ping.on("click", function (e) {
+                            e.preventDefault();
 
-                            // generate time with time function
+                            var staticURL = "https://maps.googleapis.com/maps/api/staticmap?center=40.730607299999996,-74.0660585&zoom=13&size=200x200&maptype=roadmap&markers=color:red%7C40.730607299999996,-74.0660585&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
+                            // console.log(apiURL);
+
+                            var msgArr = [1, staticURL];
+
+                            // if ($("#input-field").val() == '') {
+                            // var mapMessage = $('<img>');
+                            // mapMessage.attr('src', staticURL);
+                            // console.log(mapMessage);
+
+                            // forcibly clear input field
+                            $("#input-field").val('');
+
                             var time = whatTime();
-                            alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
-
-                            // push to database formatted message
-                            // message should be the api's response when you find your own location. it will send into the messaging database. 
                             database.ref(myRegion + "/").push({
                                 username: username,
-                                message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
+                                message: msgArr,
                                 timestamp: time,
-                                type: "ping",
+                                // type: "ping",
                             });
-                        });
+                            alert("msgArr sent");
+                            $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                            // }
+
+                        }); //end ping
 
                         // chat message updater
                         database.ref().on("value", function (snapshot) {
