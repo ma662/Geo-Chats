@@ -18,8 +18,10 @@ p {
 }
 
 #uname-display {
+    padding-top: 0px 10px 0px 0px;
     font-family: 'Poppins', sans-serif;
     color: #fff;
+    font-size: 25px;
 }
 
 .logout {
