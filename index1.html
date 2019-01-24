@@ -29,11 +29,27 @@
 
     <!-- Linking Firebase from myles -->
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
-    <!-- Linking in Robs API -->
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyAOKpdCN5cXgEoKrBnRlg3M72BrOnAty_0"></script>
+    
 </head>
 
 <body>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+                </div>
+                <div class="modal-body">
+                    You are not located in that Region. Please try another option. Thank you!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="wrapper">
         <!-- Sidebar Holder -->
         <nav id="sidebar">
@@ -47,10 +63,10 @@
                 <li class="active">
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <button class="region" id="region:jersey-city">
+                        <button class="region" id="region:jersey-city" name="NJ">
                             <li><a href="#">Jersey City</a></li>
                         </button>
-                        <button class="region" id="region:new-york-city">
+                        <button class="region" id="region:new-york-city" name="NY">
                             <li><a href="#">New York</a></li>
                         </button>
                     </ul>
@@ -79,7 +95,7 @@
 
             <div id="border">
 
-                
+
             </div>
 
 
@@ -143,7 +159,7 @@
                         var today = new Date();
                         var time = today.toLocaleTimeString()
 
-                        return time;                     
+                        return time;
                     }
 
                     // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
@@ -169,12 +185,12 @@
                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                         }
 
-                      
+
                     }); //end send
-                    
+
                     // on id ping button click
-                    $("#ping").on("click", function(){
-                        
+                    $("#ping").on("click", function () {
+
                         // generate time with time function
                         var time = whatTime();
                         alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
@@ -304,7 +320,7 @@
 
                 window.onload = geolocateUser;
                 // End GPS API
-                
+
             </script>
 
         </div>
