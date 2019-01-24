@@ -4,7 +4,7 @@
 
 body {
     background-image: url(assets/images/banner_chapter_new_jersey.jpg);
-    width: 100%;
+    /* width: 100%; */
     font-family: 'Poppins', sans-serif;
     background: white;
 }
@@ -18,10 +18,10 @@ p {
 }
 
 #uname-display {
-    padding-top: 0px 10px 0px 0px;
+    padding-top: 0px 0px 15px 10px;
     font-family: 'Poppins', sans-serif;
     color: #fff;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .logout {
