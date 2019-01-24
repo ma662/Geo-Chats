@@ -99,12 +99,14 @@
             <script>
                 var myRegion = null;
                 var debugVar = null;
+                var regionLocked = false;
 
                 // $("#name-display").text(sessionStorage.getItem("name"));
 
                 var username = localStorage.getItem('username');//prompt("Please enter a username"); // pull this from login database
                 console.log(username);
 
+<<<<<<< HEAD
                 var username = sessionStorage.getItem("username"));
 
                 $(".region").on("click", function () {
@@ -113,145 +115,156 @@
                     // else, all loading and storing is based upon a region string
                     myRegion = this.id;
                     console.log(myRegion);
+=======
+                // $(document).ready(function(){
+>>>>>>> 3359680a82cabaf97403080b2188a4c9f749fce9
 
-
-                    // Initialize Firebase for Messaging 
-                    var config = {
-                        apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
-                        authDomain: "geo-chats.firebaseapp.com",
-                        databaseURL: "https://geo-chats.firebaseio.com",
-                        projectId: "geo-chats",
-                        storageBucket: "geo-chats.appspot.com",
-                        messagingSenderId: "157534175404"
-                    };
-                    firebase.initializeApp(config);
-
-                    var database = firebase.database();
-
-                    var chatDiv = $("<div id='chat-div'>");
-                    var chatHistory = $("<div id='chat-history'>");
-                    chatHistory.appendTo(chatDiv);
-
-                    // Things for Input
-                    var inputForm = $("<form>");
-
-                    var inputField = $("<input type='text'>").text("Type your message...");
-                    inputField.attr("id", "input-field");
-                    inputField.appendTo(inputForm);
-
-                    var send = $("<button type='submit' id='submit'>").text("| Send Message");
-                    send.appendTo(inputForm);
-
-                    var ping = $("<button type='button' id='location'>").text("🌎|");
-                    ping.appendTo(inputForm);
-
-                    inputForm.appendTo(chatDiv);
-                    chatDiv.appendTo("#border");
-
-
-                    function whatTime() {
-                        var today = new Date();
-                        var time = today.toLocaleTimeString()
-
-                        return time;
-                    }
-
-                    // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
-                    send.on("click", function (e) {
+                    $(".region").on("click", function (e) {
                         e.preventDefault();
 
-                        if ($("#input-field").val() != '') {
-                            var newMessage = $("#input-field").val();
+                        // alert(var _regionLocked);
+                        if(!regionLocked) {
+                        console.log(regionLocked);
+                            // (ROB STUFF - Check Location If Region is Bad, No Entry)
 
-                            // forcibly clear input field
-                            $("#input-field").val('');
+                            var regionLocked = true;
 
-                            var time = whatTime();
-                            console.log(time);
+                            // else, all loading and storing is based upon a region string
+                            myRegion = this.id;
+                            console.log(myRegion);
 
-                            database.ref(myRegion + "/").push({
-                                username: username,
-                                message: newMessage,
-                                timestamp: time,
-                                type: "message",
+                            // Initialize Firebase for Messaging 
+                            var config = {
+                                apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+                                authDomain: "geo-chats.firebaseapp.com",
+                                databaseURL: "https://geo-chats.firebaseio.com",
+                                projectId: "geo-chats",
+                                storageBucket: "geo-chats.appspot.com",
+                                messagingSenderId: "157534175404"
+                            };
+                            firebase.initializeApp(config);
+
+                            var database = firebase.database();
+    
+                            var chatDiv = $("<div id='chat-div'>");
+                            var chatHistory = $("<div id='chat-history'>");
+                            chatHistory.appendTo(chatDiv);
+
+                            // Things for Input
+                            var inputForm = $("<form>");
+
+                            var inputField = $("<input type='text'>").text("Type your message...");
+                            inputField.attr("id", "input-field");
+                            inputField.appendTo(inputForm);
+
+                            var send = $("<button type='submit' id='submit'>").text("| Send Message");
+                            send.appendTo(inputForm);
+
+                            var ping = $("<button type='button' id='ping'>").text("🌎|");
+                            ping.appendTo(inputForm);
+
+                            inputForm.appendTo(chatDiv);
+                            chatDiv.appendTo("#border");
+
+
+                            function whatTime() {
+                                var today = new Date();
+                                var time = today.toLocaleTimeString()
+
+                                return time;
+                            }
+
+                            // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
+                            send.on("click", function (e) {
+                                e.preventDefault();
+
+                                if ($("#input-field").val() != '') {
+                                    var newMessage = $("#input-field").val();
+
+                                    // forcibly clear input field
+                                    $("#input-field").val('');
+
+                                    var time = whatTime();
+                                    console.log(time);
+
+                                    database.ref(myRegion + "/").push({
+                                        username: username,
+                                        message: newMessage,
+                                        timestamp: time,
+                                        type: "message",
+                                    });
+
+                                    $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                                }
+
+
+                            }); //end send
+
+                            // on id ping button click
+                            $("#ping").on("click", function () {
+
+                                // generate time with time function
+                                var time = whatTime();
+                                alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
+
+                                // push to database formatted message
+                                // message should be the api's response when you find your own location. it will send into the messaging database. 
+                                database.ref(myRegion + "/").push({
+                                    username: username,
+                                    message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
+                                    timestamp: time,
+                                    type: "ping",
+                                });
                             });
 
-                            $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                            // chat message updater
+                            database.ref().on("value", function (snapshot) {
+                                // everytime this fires, empty the chat
+                                chatHistory.empty();
+
+                                debugVar = snapshot.val();
+                                // console.log(snapshot.val());
+
+                                // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
+                                for (var i = 0; i < Object.keys(snapshot.val()[myRegion]).length; i++) {
+                                    // set up styling tags for activeUser
+                                    var activeUser;
+
+                                    var thisKey = Object.keys(snapshot.val()[myRegion])[i];
+                                    console.log(thisKey);
+
+                                    // message formatting (for demonstration; deprecatetd)
+                                    // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
+
+                                    // // set up styling hooks 
+                                    var thisMsg = $("<div>").addClass("messages");
+
+                                    var uName = snapshot.val()[myRegion][thisKey].username;
+                                    $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
+
+                                    var payload = snapshot.val()[myRegion][thisKey].message;
+                                    $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
+
+                                    var ts = snapshot.val()[myRegion][thisKey].timestamp;
+                                    $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
+
+                                    // console.log(thisMsg.text());
+                                    thisMsg.appendTo(chatHistory);
+                                }
+
+
+                                // console.log(key);
+                                console.log("I have fired initially or because of a db update");
+
+                                // automatically scroll chat-history div every time database is changed 
+                                $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                            });
+                        } else {
+                            alert("You've already selected a region!");
                         }
+                    }); // end region
+                // });
 
-
-                    }); //end send
-
-                    // on id ping button click
-                    $("#ping").on("click", function () {
-
-                        // generate time with time function
-                        var time = whatTime();
-                        alert("Hello! This button is going to : \n1) grab this user's location\n2) turn it into a map\n3) send to maps api and get an image link\n4) append that imagelink as a message\nwoooo!");
-
-                        // push to database formatted message
-                        // message should be the api's response when you find your own location. it will send into the messaging database. 
-                        database.ref(myRegion + "/").push({
-                            username: username,
-                            message: "ROB PING RESPONSE HERE / SHOULD BE AN IMAGE",
-                            timestamp: time,
-                            type: "ping",
-                        });
-                    });
-
-                    // chat message updater
-                    database.ref().on("value", function (snapshot) {
-                        // everytime this fires, empty the chat
-                        chatHistory.empty();
-
-                        debugVar = snapshot.val();
-                        // console.log(snapshot.val());
-
-                        // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
-                        for (var i = 0; i < Object.keys(snapshot.val()[myRegion]).length; i++) {
-                            // set up styling tags for activeUser
-                            var activeUser;
-
-                            var thisKey = Object.keys(snapshot.val()[myRegion])[i];
-                            console.log(thisKey);
-
-                            // message formatting (for demonstration)
-                            // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
-
-                            // // set up styling hooks 
-                            var thisMsg = $("<div>").addClass("messages");
-
-                            // var uName = $("<p>").attr("class", "sender").text(snapshot.val()[myRegion][thisKey].username);
-                            // var payload = $("<p>").attr("class", "payload").text(snapshot.val()[myRegion][thisKey].message);
-                            // var ts = $("<p>").attr("class", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
-
-                            var uName = snapshot.val()[myRegion][thisKey].username;
-                            $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
-
-                            var payload = snapshot.val()[myRegion][thisKey].message;
-                            $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
-
-                            var ts = snapshot.val()[myRegion][thisKey].timestamp;
-                            $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
-
-                            // console.log(thisMsg.text());
-                            thisMsg.appendTo(chatHistory);
-                        }
-
-                        //snapshot.val().testing[thisKey].username
-
-                        // console.log(key);
-                        console.log("I have fired initially or because of a db update");
-                        // clickCounter = snapshot.val().clickCount;
-
-                        // $("#chat-history").text(snapshot.val().clickCount);
-                        // }, function(errorObject) {
-                        // console.log("The read failed: " + errorObject.code);
-
-                        // automatically scroll chat-history div every time database is changed 
-                        $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
-                    });
-                }); // end region
 
             </script>
 
@@ -321,7 +334,9 @@
     </div>
 
 
-
+    <!-- maps API -->
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOKpdCN5cXgEoKrBnRlg3M72BrOnAty_0&">
+    </script> -->
 
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
