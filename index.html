@@ -207,6 +207,8 @@
                             if ($("#input-field").val() != '') {
                                 var newMessage = $("#input-field").val();
 
+                                var msgArr = [0, newMessage];
+
                                 // forcibly clear input field
                                 $("#input-field").val('');
 
@@ -215,9 +217,9 @@
 
                                 database.ref(myRegion + "/").push({
                                     username: username,
-                                    message: newMessage,
+                                    message: msgArr,
                                     timestamp: time,
-                                    type: "message",
+                                    // type: "message",
                                 });
 
                                 $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
@@ -260,8 +262,7 @@
                         database.ref().on("value", function (snapshot) {
                             // everytime this fires, empty the chat
                             chatHistory.empty();
-
-                            debugVar = snapshot.val();
+                            // debugVar = snapshot.val();
                             // console.log(snapshot.val());
 
                             // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
@@ -279,7 +280,19 @@
                                 $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
 
                                 var payload = snapshot.val()[myRegion][thisKey].message;
-                                $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
+                                
+                                // if payload is a regular message
+                                if (payload[0] === 0) {
+                                    var txtMsg = payload[1];
+                                    $("<p>").attr("id", "payload").text(txtMsg).appendTo(thisMsg);
+                                }
+                                // if payload is a mapMessage
+                                else if (payload[0] === 1) {
+                                    var thisLink = payload[1];
+                                    $("<img>").attr("id", "payload").attr("src", thisLink).appendTo(thisMsg);
+                                }
+
+                                console.log(payload);
 
                                 var ts = snapshot.val()[myRegion][thisKey].timestamp;
                                 $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
