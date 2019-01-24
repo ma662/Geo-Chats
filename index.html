@@ -100,8 +100,10 @@
                 var myRegion = null;
                 var debugVar = null;
 
+                // $("#name-display").text(sessionStorage.getItem("name"));
 
-                var username = prompt("Please enter a username"); // pull this from login database
+                var username = localStorage.getItem('username');//prompt("Please enter a username"); // pull this from login database
+                console.log(username);
 
                 $(".region").on("click", function () {
                     // (ROB STUFF - Check Location If Region is Bad, No Entry)
@@ -110,12 +112,6 @@
                     myRegion = this.id;
                     console.log(myRegion);
 
-
-                    // NOTES: 
-                    // Need region poll upon clicking on region button
-
-                    // To do: 
-                    // username gets linked by nikki user db
 
                     // Initialize Firebase for Messaging 
                     var config = {
@@ -144,7 +140,7 @@
                     var send = $("<button type='submit' id='submit'>").text("| Send Message");
                     send.appendTo(inputForm);
 
-                    var ping = $("<button type='button' id='ping'>").text("🌎|");
+                    var ping = $("<button type='button' id='location'>").text("🌎|");
                     ping.appendTo(inputForm);
 
                     inputForm.appendTo(chatDiv);

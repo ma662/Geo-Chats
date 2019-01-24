@@ -74,6 +74,9 @@
             var database = firebase.database();
             var userRef = database.ref("users/");
 
+            var activeUser = localStorage.getItem('username');
+            console.log(activeUser);
+
             var debugVar = null;
 
 
@@ -179,10 +182,10 @@
 
                                     if (uPass === comp) {
                                         // Clear sessionStorage
-                                        sessionStorage.clear();
+                                        localStorage.clear();
 
                                         // Store all content into sessionStorage
-                                        sessionStorage.setItem("username", uName);
+                                        localStorage.setItem("username", uName);
 
                                         alert("Login successful");
 
