@@ -75,76 +75,15 @@
                 </div>
             </nav>
 
-            <h2>A new way to Chat With people in your location</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.</p>
-
             <h2>A new way to chat with people in your location!</h2>
 
-            <div class="line"></div>
             <div id="border">
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                    dolore
-                    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.</p>
+                
             </div>
 
-            <div class="line"></div>
-
-            <button id="location">Show My Location</button>
-
-            <br><br>
-
-            <div id="map"></div>
-            <p id="error"></p>
-            <div id="border">
-            </div>
-
-
-
-            <div class="line"></div>
 
             <!-- Region chatroom testing -->
-
-            <!-- Example Style Template -->
-            <style>
-                #sender {
-                    color: white;
-                    margin-left: 1.1em;
-                    margin-top: 2em;
-                    margin-bottom: 0;
-                    font-size: 0.9em;
-                }
-                
-                #payload {
-                    font-size: 0.75em;
-                    padding-top: 0;
-                    margin-top: -2px;
-                    padding-bottom: 8px;
-                    margin-left: 3em;
-                }
-                
-                #timestamp {
-                    margin-top: -15px;
-                    float: right;
-                    margin-right: 4em;
-                    font-size: 0.65em;
-                    font-weight: bolder;
-                    color: lightsteelblue;
-                }
-                .messages {
-                    border-radius: 25px;
-                    background-color: rgba(137, 179, 54, 0.486);
-                }
-            </style>
             <script>
                 var myRegion = null;
                 var debugVar = null;
@@ -186,19 +125,14 @@
                     // Things for Input
                     var inputForm = $("<form>");
 
-                    var inputField = $("<input type='text'>");
+                    var inputField = $("<input type='text'>").text("Type your message...");
                     inputField.attr("id", "input-field");
                     inputField.appendTo(inputForm);
 
-<<<<<<< HEAD
-                    var send = $("<button type='submit' id='submit'>").text("Send Message");
-                    inputField.appendTo(inputForm);
-=======
-                    var send = $("<button type='submit'>").text("Send Message");
->>>>>>> 38d872aa7f13c826fc2088e1bdd56c0bf03ef128
+                    var send = $("<button type='submit' id='submit'>").text("| Send Message");
                     send.appendTo(inputForm);
 
-                    var ping = $("<button type='button' id='ping'>").text("🌎");
+                    var ping = $("<button type='button' id='ping'>").text("🌎|");
                     ping.appendTo(inputForm);
 
                     inputForm.appendTo(chatDiv);
@@ -274,14 +208,6 @@
                             // message formatting (for demonstration)
                             // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
 
-<<<<<<< HEAD
-                            // set up styling hooks 
-                            var thisMsg = $("<div>").addClass("messages");
-
-                            var uName = $("<p>").attr("id", "sender").text(snapshot.val()[myRegion][thisKey].username);
-                            var payload = $("<p>").attr("id", "payload").text(snapshot.val()[myRegion][thisKey].message);
-                            var ts = $("<p>").attr("id", "timestamp").text(snapshot.val()[myRegion][thisKey].timestamp);
-=======
                             // // set up styling hooks 
                             var thisMsg = $("<div>").addClass("messages");
 
@@ -291,7 +217,6 @@
 
                             var uName = snapshot.val()[myRegion][thisKey].username;
                             $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
->>>>>>> 38d872aa7f13c826fc2088e1bdd56c0bf03ef128
 
                             var payload = snapshot.val()[myRegion][thisKey].message;
                             $("<p>").attr("id", "payload").text(payload).appendTo(thisMsg);
