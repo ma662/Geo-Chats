@@ -63,10 +63,11 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
                 </div>
                 <div class="modal-body">
-                    You have already selected a region. If you'd like to select a new one, please refresh the site.
+                    You have already selected a region. If you'd like to select a new one, please press "New Room".
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="refresh" type="button" class="btn btn-secondary" data-dismiss="modal">New Room</button>
                 </div>
             </div>
         </div>
@@ -84,14 +85,14 @@
                 <p class="light">Welcome to GEO CHAT!</p>
 
                 <li class="active">
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Regions</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
 
+                        <li class="region" id="region:jersey-city"><a href="#">Jersey City</a></li>
+                        
                         <li class="region" id="region:nj"><a href="#">New Jersey</a></li>
 
-                        <li class="region" id="region:jersey-city" name="NJ"><a href="#">Jersey City</a></li>
-
-                        <li class="region" id="region:new-york" name="NY"><a href="#">New York</a></li>
+                        <li class="region" id="region:new-york"><a href="#">New York</a></li>
 
                     </ul>
                     <a href="about.html">About Us</a>
@@ -142,6 +143,10 @@
                     if (user.loggedIn != "true") {
                         window.open ('./login.html','_self',false);
                     }
+
+                    $("#refresh").on("click", function() {
+                        window.open ('./index.html', '_self', false);
+                    });
                     
                     $("#logout").on("click", function () {
                         localStorage.clear();
