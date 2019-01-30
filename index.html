@@ -111,6 +111,8 @@
                     if (loggedIn != "true") {
                         window.open("./login.html");
                     }
+
+                    // clear ls cache
                     $("#logout").on("click", function () {
                         localStorage.clear();
                     });
@@ -127,6 +129,7 @@
 
                 // Geolocation functioning
                 function geolocate() {
+                    console.log(navigator.gelocation);
 
                     // Receive user's latitude and longitude
                     if (navigator.geolocation) {
@@ -146,15 +149,18 @@
                                 url: queryURL,
                                 method: "GET"
                             }).then(function (response) {
+                                console.log(response);
                                 var addressComponents = response.results[0].address_components;
                                 console.log(addressComponents);
 
                                 // Google Javascript Map API Key
-                                var mapURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + pos.lat + "," + pos.lng + "&zoom=12&size=500x500&maptype=roadmap&markers=color:red%7C" + pos.lat + "," + pos.lng + "&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
+                                var mapURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + pos.lat + "," + pos.lng + "&zoom=13&size=350x350&maptype=roadmap&markers=color:red%7C" + pos.lat + "," + pos.lng + "&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
                                 
                                 // Creating the static map image
                                 var staticMap = $('<img>');
                                 staticMap.attr('src', mapURL);
+
+                                staticMap.appendTo(document.body);
 
                                 $(".region").on("click", function (e) {
                                     e.preventDefault();
