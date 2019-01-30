@@ -86,11 +86,12 @@
                 <li class="active">
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
+
                         <li class="region" id="region:nj"><a href="#">New Jersey</a></li>
 
                         <li class="region" id="region:jersey-city" name="NJ"><a href="#">Jersey City</a></li>
 
-                        <li class="region" id="region:new-york-city" name="NY"><a href="#">New York</a></li>
+                        <li class="region" id="region:new-york" name="NY"><a href="#">New York</a></li>
 
                     </ul>
                     <a href="about.html">About Us</a>
@@ -234,7 +235,7 @@
                     if (!user.selectedRegion) {
                         chat.regionCode = this.id;
                         myRegion = (chat.regionCode.slice(7, chat.regionCode.length).replace(/-/g, ' '));
-                        // jersey city || new york city
+                        // jersey city || new york
 
                         // get user position
                         navigator.geolocation.getCurrentPosition(function (position, error) {
@@ -284,7 +285,6 @@
                                 if (!chat.regionLocked && user.selectedRegion) {
                                     alert("Region check passed!");
                                     chat.regionLocked = true;
-
 
                                     // ===================================
                                     // Dynamic Chatroom Initialization
