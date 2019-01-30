@@ -1,9 +1,35 @@
-/* chatroom messaging css from miles */
+/* chatroom messaging css from Myles */
+#border {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80em;
+}
+
+#chat-div { 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form {
+    width: 80%;
+    margin-left: 4em;
+    margin-right: auto;
+    position: relative;
+    /* align-items: center; */
+    padding: 0;
+    left: 0;
+}
+
+
 #chat-history {
     background-color: #546386;
     background-color: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
     background-color: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
     color: white;
+
+    margin-left: auto;
+    margin-right: auto;
+
     border-radius: 15px 15px 15px 0px;
     width: 90%;
     height: 500px;
@@ -11,6 +37,11 @@
     overflow: scroll;
     border: 10px #546386;
     box-shadow: 5px 0px 5px grey;
+}
+
+.messages {
+    width: 60%;
+    word-wrap: break-word;
 }
 
 #map {
@@ -25,52 +56,57 @@
 	margin-left: 10px;
 	border-radius: 25px;
 	background-color: #93cada;
-	padding: 10px;
-    position: relative;
-    width: 25%;
+    padding: 2% 4%;
+    /* position: relative; */
+    width: 80%;
 }
 
 #timestamp {
 	color: rgba(255,255,255,0.5);
-	font-size: 10px;
+
+    font-size: 10px;
+    margin-left: 1.5em;
+    margin-top: 6px;
 }
 
 #sender {
     color: white;
-	font-size: 15px;
+    font-size: 15px;
+    margin-left: 1em;
 }
 
 #input-field {
-    
     background-color: #39435b;
     border: 0;
-    color:white;
+    color: white;
     height: 40px;
     overflow-y: auto;
-    width: 75%;
+    width: 92%;
     box-shadow: none;
     outline: 0px;
     border-radius: 0px 0px 0px 0px;
-    padding-left: 20px;
-    position: relative;
 }
 
 #submit {
     border-radius: 0px 0px 15px 0px;
     background-color: #39435b;
     height: 40px;
-	border: 0;
+    border: 0;
     color: white;
-    clear: all;
     position: absolute;
+    width: 9.5em;
 }
 
 #ping {
     border-radius: 0px 0px 0px 10px;
     background-color: #39435b;
     height: 40px;
-	border: 0;
+    width: 50px;
+    border: 0;
     color: white;
     float: left;
     position: relative;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }

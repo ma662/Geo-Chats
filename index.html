@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Geo Chats</title>
+    <title>Geo Chat</title>
     <!-- this is the code that will allow icon to be visible in the title bar of the brower -->
     <link rel="icon" type="image/ico" href="assets/images/geo_chat_logo_160.png" />
 
@@ -36,7 +36,7 @@
 
 <body>
     <!-- Modal -->
-    <div id="myModal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div id="wrong-region" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -44,7 +44,26 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
                 </div>
                 <div class="modal-body">
-                    You are not located in that Region. Please try another option. Thank you!
+                    You are not located in that region. Please try another option. Thank you!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of Modal -->
+
+    <!-- Modal -->
+    <div id="region-selected" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+                </div>
+                <div class="modal-body">
+                    You have already selected a region. If you'd like to select a new one, please refresh the site.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -67,6 +86,7 @@
                 <li class="active">
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Region</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li class="region" id="region:nj"><a href="#">New Jersey</a></li>
 
                         <li class="region" id="region:jersey-city" name="NJ"><a href="#">Jersey City</a></li>
 
@@ -81,7 +101,6 @@
 
         <!-- Page Content Holder -->
         <div id="content">
-
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
 
@@ -92,297 +111,277 @@
                             <span></span>
                         </button>
                     </div>
-                    <p id="uname-display">Username Placeholder</a>
+                    <p id="uname-display"></a>
 
                 </div>
             </nav>
 
             <h2>A new way to chat with people in your location!</h2>
-
+            <h6>( This application requires access to your current location ... obviously )</h6>
+            
+            <!-- Chatroom div -->
             <div id="border">
-
-
             </div>
-      
+            
             <!-- Region chatroom testing -->
-            <script>
-                $(document).ready(function () {
-                    var loggedIn = localStorage.getItem('log-token');
-                    console.log(loggedIn);
-                    console.log(typeof (loggedIn));
+            <script type="text/javascript" defer>
 
-                    if (loggedIn != "true") {
-                        window.open("./login.html"); // open login page
+                // deals with cache reading and token checking
+                $(document).ready(function () {
+    
+                    user.loggedIn = localStorage.getItem('log-token');
+                    user.username = localStorage.getItem('username');
+                    // console.log(username);
+                    
+                    // set up styling tags for activeUser
+                    var activeUser = user.username;
+                    $("#uname-display").text(activeUser);
+                    
+                    // force open login page in same window
+                    if (user.loggedIn != "true") {
+                        window.open ('./login.html','_self',false);
                     }
+                    
                     $("#logout").on("click", function () {
                         localStorage.clear();
                     });
                 });
 
-                var myRegion = null;
-                var debugVar = null;
-                var regionLocked = false;
+                // Firebase Init
+                var config = {
+                    apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
+                    authDomain: "geo-chats.firebaseapp.com",
+                    databaseURL: "https://geo-chats.firebaseio.com",
+                    projectId: "geo-chats",
+                    storageBucket: "geo-chats.appspot.com",
+                    messagingSenderId: "157534175404"
+                };
+                firebase.initializeApp(config);
+                var database = firebase.database();
 
-                // $("#name-display").text(sessionStorage.getItem("name"));
+                var user = {
+                    loggedIn: '',
+                    username: '',
+                    selectedRegion: false,
+                };
 
-                var username = localStorage.getItem('username');//prompt("Please enter a username"); // pull this from login database
-                console.log(username);
+                // object of chat commands
+                var chat = {
+                    regionLocked: true,      // regionLocked until geolocationally confirmed
+                    regionCode: 'trashHeap',
 
-                // set up styling tags for activeUser
-                var activeUser = username;
+                    whatTime: function() {
+                        var today = new Date();
+                        var time = today.toLocaleTimeString()
 
-                // var username = sessionStorage.getItem("username"));
-                $("#uname-display").text(activeUser);
+                        return time;
+                    },
 
-                // $(document).ready(function(){
+                    send: function() {
+                        if ($("#input-field").val() != '') {
+                            var newMessage = $("#input-field").val();
 
-                $(".region").on("click", function (e) {
-                    e.preventDefault();
-
-                    if (this.id != "region:jersey-city") {
-                        $("#myModal").modal("show");
-                        regionLocked = true;
-                    }
-
-                    // alert(var _regionLocked);
-                    if (!regionLocked) {
-                        console.log(regionLocked);
-                        // (ROB STUFF - Check Location If Region is Bad, No Entry)
-
-                        var regionLocked = true;
-
-                        // else, all loading and storing is based upon a region string
-                        myRegion = this.id;
-                        console.log(myRegion);
-
-                        // Initialize Firebase for Messaging 
-                        var config = {
-                            apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
-                            authDomain: "geo-chats.firebaseapp.com",
-                            databaseURL: "https://geo-chats.firebaseio.com",
-                            projectId: "geo-chats",
-                            storageBucket: "geo-chats.appspot.com",
-                            messagingSenderId: "157534175404"
-                        };
-                        firebase.initializeApp(config);
-
-                        var database = firebase.database();
-
-                        var chatDiv = $("<div id='chat-div'>");
-                        var chatHistory = $("<div id='chat-history'>");
-                        chatHistory.appendTo(chatDiv);
-
-                        // Things for Input
-                        var inputForm = $("<form>");
-
-                        var inputField = $("<input type='text'>").text("Type your message...");
-                        inputField.attr("id", "input-field");
-                        inputField.appendTo(inputForm);
-
-                        var send = $("<button type='submit' id='submit'>").text("| Send Message");
-                        send.appendTo(inputForm);
-
-                        var ping = $("<button type='button' id='ping'>").text("🌎|");
-                        ping.appendTo(inputForm);
-
-                        inputForm.appendTo(chatDiv);
-                        chatDiv.appendTo("#border");
-
-
-                        function whatTime() {
-                            var today = new Date();
-                            var time = today.toLocaleTimeString()
-
-                            return time;
-                        }
-
-                        // NEED TO NEST THIS BASED ON THE REGION CHATROOMS
-                        send.on("click", function (e) {
-                            e.preventDefault();
-
-                            if ($("#input-field").val() != '') {
-                                var newMessage = $("#input-field").val();
-
-                                var msgArr = [0, newMessage];
-
-                                // forcibly clear input field
-                                $("#input-field").val('');
-
-                                var time = whatTime();
-                                console.log(time);
-
-                                database.ref(myRegion + "/").push({
-                                    username: username,
-                                    message: msgArr,
-                                    timestamp: time,
-                                    // type: "message",
-                                });
-
-                                $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
-                            }
-
-
-                        }); //end send
-
-                        // on id ping button click
-                        ping.on("click", function (e) {
-                            e.preventDefault();
-
-                            var staticURL = "https://maps.googleapis.com/maps/api/staticmap?center=40.730607299999996,-74.0660585&zoom=13&size=200x200&maptype=roadmap&markers=color:red%7C40.730607299999996,-74.0660585&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
-                            // console.log(apiURL);
-
-                            var msgArr = [1, staticURL];
-
-                            // if ($("#input-field").val() == '') {
-                            // var mapMessage = $('<img>');
-                            // mapMessage.attr('src', staticURL);
-                            // console.log(mapMessage);
+                            var msgArr = [0, newMessage];
 
                             // forcibly clear input field
                             $("#input-field").val('');
 
-                            var time = whatTime();
-                            database.ref(myRegion + "/").push({
-                                username: username,
+                            var time = this.whatTime();
+
+                            database.ref(chat.regionCode + "/").push({
+                                username: user.username,
                                 message: msgArr,
                                 timestamp: time,
-                                // type: "ping",
+                                // type: "message",
                             });
-                            // alert("msgArr sent");
+
                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
-                            // }
+                        }
+                    },
 
-                        }); //end ping
+                    ping: function() {
+                        navigator.geolocation.getCurrentPosition(function (position, error) {
+                            var pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
 
-                        // chat message updater
-                        database.ref().on("value", function (snapshot) {
-                            // everytime this fires, empty the chat
-                            chatHistory.empty();
-                            // debugVar = snapshot.val();
-                            // console.log(snapshot.val());
+                            // console.log(pos.lat);
+                            // console.log(pos.lng);
+                            
+                            var mapURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + pos.lat + "," + pos.lng + "&zoom=13&size=350x350&maptype=roadmap&markers=color:red%7C" + pos.lat + "," + pos.lng + "&key=AIzaSyDWxgwUgXQkFafEz-Xojc7P1tn_j4e3NDg";
+                            var msgArr = [1, mapURL];
 
-                            // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
-                            for (var i = 0; i < Object.keys(snapshot.val()[myRegion]).length; i++) {
-                                var thisKey = Object.keys(snapshot.val()[myRegion])[i];
-                                console.log(thisKey);
+                            // forcibly clear input field
+                            $("#input-field").val('');
 
-                                // message formatting (for demonstration; deprecatetd)
-                                // var thisMsg = $("<p>").text(snapshot.val()[myRegion][thisKey].username + ': \n' + snapshot.val()[myRegion][thisKey].message + '\nat ' + snapshot.val()[myRegion][thisKey].timestamp);
+                            var time = chat.whatTime();
+                            database.ref(chat.regionCode + "/").push({
+                                username: user.username,
+                                message: msgArr,
+                                timestamp: time,
+                            });
 
-                                // // set up styling hooks 
-                                var thisMsg = $("<div>").addClass("messages");
-
-                                var uName = snapshot.val()[myRegion][thisKey].username;
-                                $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
-
-                                var payload = snapshot.val()[myRegion][thisKey].message;
-                                
-                                // if payload is a regular message
-                                if (payload[0] === 0) {
-                                    var txtMsg = payload[1];
-                                    $("<p>").attr("id", "payload").text(txtMsg).appendTo(thisMsg);
-                                }
-                                // if payload is a mapMessage
-                                else if (payload[0] === 1) {
-                                    var thisLink = payload[1];
-                                    $("<img>").attr("id", "payload").attr("src", thisLink).appendTo(thisMsg);
-                                }
-
-                                console.log(payload);
-
-                                var ts = snapshot.val()[myRegion][thisKey].timestamp;
-                                $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
-
-                                // console.log(thisMsg.text());
-                                thisMsg.appendTo(chatHistory);
-                            }
-
-
-                            // console.log(key);
-                            console.log("I have fired initially or because of a db update");
-
-                            // automatically scroll chat-history div every time database is changed 
                             $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
                         });
-                    } else {
-                        // alert("You've already selected a region!");
-                        console.log("You've already selected a region");
+                    }, // end of ping
+                }; // chat object end
+
+                // when region is clicked
+                $(".region").on("click", function (e) {
+                    e.preventDefault();
+
+                    if (!user.selectedRegion) {
+                        chat.regionCode = this.id;
+                        myRegion = (chat.regionCode.slice(7, chat.regionCode.length).replace(/-/g, ' '));
+                        // jersey city || new york city
+
+                        // get user position
+                        navigator.geolocation.getCurrentPosition(function (position, error) {
+                            var pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            
+                            var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + pos.lat + "," + pos.lng + "&key=AIzaSyAOKpdCN5cXgEoKrBnRlg3M72BrOnAty_0";
+
+                            // Function to call Geocoding results
+                            $.ajax({
+                                url: queryURL,
+                                method: "GET"
+                            }).then(function (response) {
+                                    // ===================================
+                                    // Region Checking
+                                    // ===================================
+
+                                var addressComponents = response.results[0].address_components;
+                                // (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+
+                                for (var i = 0; i < addressComponents.length; i++) {
+
+                                    // ensure user's comps are lowercase so the comparison works
+                                    var formattedComp = addressComponents[i]["short_name"].toLowerCase();
+
+                                    // For Debugging
+                                    // console.log({
+                                    //     myRegion: myRegion,
+                                    //     aComp: formattedComp,
+                                    // });
+
+                                    if (formattedComp === myRegion) {
+                                        chat.regionLocked = false;
+                                        user.selectedRegion = true;
+                                        break;
+                                    }
+                                    else if (i === addressComponents.length - 1 && chat.regionLocked){
+                                        // if you fail region check, show modal
+                                        $("#wrong-region").modal("show");
+                                    }
+                                    console.log(chat.regionLocked);
+                                }
+
+                                // pass region check
+                                if (!chat.regionLocked && user.selectedRegion) {
+                                    alert("Region check passed!");
+                                    chat.regionLocked = true;
+
+
+                                    // ===================================
+                                    // Dynamic Chatroom Initialization
+                                    // ===================================
+
+                                    var chatDiv = $("<div id='chat-div'>");
+                                    var chatHistory = $("<div id='chat-history'>");
+                                    chatHistory.appendTo(chatDiv);
+
+                                    // User Input
+                                    var inputForm = $("<form>");
+
+                                    var inputField = $("<input type='text'>").text("Type your message...");
+                                    inputField.attr("id", "input-field");
+                                    inputField.appendTo(inputForm);
+
+                                    var send = $("<button type='submit' id='submit'>").text("| Send Message");
+                                    send.appendTo(inputForm);
+
+                                    var ping = $("<button type='button' id='ping'>").text("🌎|");
+                                    ping.appendTo(inputForm);
+
+                                    inputForm.appendTo(chatDiv);
+                                    chatDiv.appendTo("#border");
+
+                                    // ===================================
+                                    // Chat Functions
+                                    // ===================================
+
+                                    send.on("click", function (e) {
+                                        e.preventDefault();
+                                        chat["send"]();
+                                    });
+
+                                    // on id ping button click
+                                    ping.on("click", function (e) {
+                                        e.preventDefault();
+                                        chat["ping"]();
+                                    });
+
+                                    // chat message updater
+                                    database.ref().on("value", function (snapshot) {
+                                        // everytime this fires, empty the chat
+                                        chatHistory.empty();
+
+                                        // go through snapshot keys, create a p tag and stuff into chat history, then stuff chat history into chat div
+                                        for (var i = 0; i < Object.keys(snapshot.val()[chat.regionCode]).length; i++) {
+                                            var thisKey = Object.keys(snapshot.val()[chat.regionCode])[i];
+
+                                            // // set up styling hooks 
+                                            var thisMsg = $("<div>").addClass("messages");
+
+                                            var uName = snapshot.val()[chat.regionCode][thisKey].username;
+                                            $("<p>").attr("id", "sender").text(uName + ":").appendTo(thisMsg);
+
+                                            var payload = snapshot.val()[chat.regionCode][thisKey].message;
+                                            
+                                            // if payload is a regular message
+                                            if (payload[0] === 0) {
+                                                var txtMsg = payload[1];
+                                                $("<p>").attr("id", "payload").text(txtMsg).appendTo(thisMsg);
+                                            }
+                                            // if payload is a mapMessage
+                                            else if (payload[0] === 1) {
+                                                var thisLink = payload[1];
+                                                $("<img>").attr("id", "payload").attr("src", thisLink).appendTo(thisMsg);
+                                            }
+
+                                            var ts = snapshot.val()[chat.regionCode][thisKey].timestamp;
+                                            $("<p>").attr("id", "timestamp").text(ts).appendTo(thisMsg);
+
+                                            // console.log(thisMsg.text());
+                                            thisMsg.appendTo(chatHistory);
+                                        }
+
+                                        console.log("I have fired initially or because of a db update");
+
+                                        // automatically scroll chat-history div every time database is changed 
+                                        $("#chat-history").scrollTop($("#chat-history").get(0).scrollHeight);
+                                    }); // end database(ref)
+
+                                } // end (!chat.regionLocked)
+
+                            }); // end ajax
+                                
+                        }); // end navigator
+
+                    } // end (!user.selectedRegion)
+                    else { 
+                        // if a region was selected and successfully entered, show modal
+                        $("#region-selected").modal("show");
                     }
-                }); // end region
-                // });
 
-
+                }); // end region click
             </script>
-
-            <!-- Adding in GPS API to Webpage -->
-            <script>
-                // Test GPS API
-                // Location button click
-                $("#location").on("click", function () {
-                    $('#map').css('display', 'block');
-
-                    // ipdata API Key
-                    var queryURL = "https://api.ipdata.co/?api-key=dbd74d08fb61a09922523a741a0c6feea9c5a1f578aeaf124dfe7cd9";
-
-                    // Function to create/send the API call or request
-                    $.ajax({
-                        url: queryURL,
-                        method: "GET"
-                    }).then(function (response) {
-                        var userCity = response.city;
-                        var userRegion = response.region;
-                        var userLatitude = response.latitude;
-                        var userLongitude = response.longitude;
-                        console.log(userCity, userRegion, userLatitude, userLongitude);
-                    })
-                });
-
-                // Function for google API
-                function geolocationSuccess(position) {
-                    var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    var myOptions = {
-                        zoom: 14,
-                        center: userLatLng,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    // Draw the map
-                    var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
-
-                    // Place the marker
-                    new google.maps.Marker({
-                        map: mapObject,
-                        position: userLatLng
-                    });
-                }
-
-                // function geolocationError(positionError) {
-                //     document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
-                // }
-
-                function geolocateUser() {
-                    if (navigator.geolocation) {
-                        var positionOptions = {
-                            enableHighAccuracy: true,
-                            timeout: 10 * 1000
-                        };
-                        navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
-                    }
-                    else
-                        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
-                }
-
-                window.onload = geolocateUser;
-                // End GPS API
-
-            </script>
-
         </div>
     </div>
-
-
-    <!-- maps API -->
-    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOKpdCN5cXgEoKrBnRlg3M72BrOnAty_0&">
-    </script> -->
 
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"

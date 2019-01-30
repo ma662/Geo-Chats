@@ -61,6 +61,8 @@
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
     <script>
+        // Secure this information !!
+
         // Initialize Firebase
         var config = {
             apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
@@ -75,8 +77,8 @@
         var database = firebase.database();
         var userRef = database.ref("users/");
 
-        var activeUser = localStorage.getItem('username');
-        console.log(activeUser);
+        // var activeUser = localStorage.getItem('username');
+        // console.log(activeUser);
 
         var debugVar = null;
 
@@ -85,9 +87,11 @@
             e.preventDefault();
 
             $("<input type='password' id='conf-pass' class='form-control' placeholder='Confirm Password' required=''>").appendTo('.form-signin');
+            
             $("#sign-up").remove();
             $("#login").remove();
 
+            // new sign-up button
             $("<button id='sign-up2' class='btn-primary btn-lg btn-block' type='button'>Create Account</button>").appendTo('.form-signin');
 
             $("#sign-up2").on("click", function (e) {
@@ -159,48 +163,38 @@
 
             if (uName != '') {
                 userRef.once("value")
-                    .then(function (snapshot) {
-                        debugVar = snapshot;
-                        mySnap = snapshot.val();
+                .then(function (snapshot) {
+                    debugVar = snapshot;
+                    mySnap = snapshot.val();
 
-                        // if db doesn't have uName
-                        if (!snapshot.hasChild(uName)) {
-                            alert("Either this username password combination is incorrect or that user doesn't exist.");
+                    // if db doesn't have uName
+                    if (!snapshot.hasChild(uName)) {
+                        // db doesn't have this user
+                        alert("Either this username password combination is incorrect or that user doesn't exist.");
+                    }
+                    else {
+                        // if db does have it, pull snapshot data, see if uPass matches pass of db user
+                        var comp = mySnap[uName]['pass'];
 
-                            // for (var i=0; i<Object.keys(mySnap).length; i++) {
-                            //     var thisKey = Object.keys(mySnap)[i];
+                        if (uPass === comp) {
+                            // Clear any other logged crap
+                            localStorage.clear();
 
-                            //     var vals = Object.keys(mySnap[thisKey]);
-                            //     console.log(vals);
+                            // Store all content into sessionStorage
+                            localStorage.setItem("username", uName);
+                            localStorage.setItem("log-token", true);
 
-                            //     var dPass = mySnap[thisKey];
-
+                            alert("Login successful");
+                            window.open ('./index.html','_self',false);
                         }
                         else {
-                            // if db does have it, pull snapshot data, see if uPass matches pass of db user
-                            var comp = mySnap[uName]['pass'];
-                            console.log(comp);
-
-                            if (uPass === comp) {
-                                // Clear sessionStorage
-                                localStorage.clear();
-
-                                // Store all content into sessionStorage
-                                localStorage.setItem("username", uName);
-                                localStorage.setItem("log-token", true);
-
-                                alert("Login successful");
-
-                                window.open("./index.html"); // open main page
-                            }
-                            else {
-                                alert("Either this username password combination is incorrect or that user doesn't exist.");
-                            }
-
+                            // password doesn't match db
+                            alert("Either this username password combination is incorrect or that user doesn't exist.");
                         }
-                        $("#username").val('');
-                        $("#pass").val('');
-                    });
+                    }
+                    $("#username").val('');
+                    $("#pass").val('');
+                });
             }
         });
     </script>
