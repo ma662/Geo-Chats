@@ -46,13 +46,14 @@ $(document).on("click", "#sign-up2", function(e){
         alert("Error:"+errorMessage)
         }).then(function() {
 
-            //fix moving from signup
+            //variables that will get pushed into the user database object
             var userEmail = auth.currentUser.email;
             var userID = auth.currentUser.uid;
             var postData = {
                 uName: uName,
                 email: userEmail,
                 joinDate: date_string,
+                avatar: "assets/images/geo_chat_logo_160.png",
                 history: [],
                 friends: []
             };
@@ -71,7 +72,7 @@ $(document).on("click", "#sign-up2", function(e){
   
   })
 
-  $("#login").on("click", function (e) {
+$(document).on("click", "#login", function (e) {
     e.preventDefault();
 
     // get vals of uName and uPass
@@ -80,49 +81,12 @@ $(document).on("click", "#sign-up2", function(e){
 
     // alert(uName + "\n" + uPass);
 
-    if (uName != '') {
-        userRef.once("value")
-            .then(function (snapshot) {
-                debugVar = snapshot;
-                mySnap = snapshot.val();
-
-                // if db doesn't have uName
-                if (!snapshot.hasChild(uName)) {
-                    alert("Either this username password combination is incorrect or that user doesn't exist.");
-
-                    // for (var i=0; i<Object.keys(mySnap).length; i++) {
-                    //     var thisKey = Object.keys(mySnap)[i];
-
-                    //     var vals = Object.keys(mySnap[thisKey]);
-                    //     console.log(vals);
-
-                    //     var dPass = mySnap[thisKey];
-
-                }
-                else {
-                    // if db does have it, pull snapshot data, see if uPass matches pass of db user
-                    var comp = mySnap[uName]['pass'];
-                    console.log(comp);
-
-                    if (uPass === comp) {
-                        // Clear sessionStorage
-                        localStorage.clear();
-
-                        // Store all content into sessionStorage
-                        localStorage.setItem("username", uName);
-                        localStorage.setItem("log-token", true);
-
-                        alert("Login successful");
-
-                        window.open("./index.html"); // open main page
-                    }
-                    else {
-                        alert("Either this username password combination is incorrect or that user doesn't exist.");
-                    }
-
-                }
-                $("#username").val('');
-                $("#pass").val('');
-            });
-    }
+    auth.signInWithEmailAndPassword(uName, uPass).catch(function(error) {
+        // Handle Errors here.
+        
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        alert("Error:"+errorMessage);
+    })
 });
