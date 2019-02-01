@@ -1,15 +1,3 @@
-var config = {
-    apiKey: "AIzaSyDs156FXHEVnRk6yj6Z82K8nWY3w1YJiG0",
-    authDomain: "geo-chats.firebaseapp.com",
-    databaseURL: "https://geo-chats.firebaseio.com",
-    projectId: "geo-chats",
-    storageBucket: "geo-chats.appspot.com",
-    messagingSenderId: "157534175404"
-};
-firebase.initializeApp(config);
-var auth = firebase.auth();
-
-
 $("#sign-up").on("click", function (e) {
     e.preventDefault();
 
@@ -53,7 +41,6 @@ $(document).on("click", "#sign-up2", function(e){
                 uName: uName,
                 email: userEmail,
                 joinDate: date_string,
-                avatar: "assets/images/geo_chat_logo_160.png",
                 history: [],
                 friends: []
             };
@@ -65,6 +52,8 @@ $(document).on("click", "#sign-up2", function(e){
             updates['/users/' + userID] = postData;
         
             console.log(updates);
+            auth.currentUser.updateProfile({displayName: uName, photoURL: "assets/images/geo_chat_logo_160.png"})
+            window.open ('./index.html','_self',false);
             return firebase.database().ref().update(updates);
         
         });

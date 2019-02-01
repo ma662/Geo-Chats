@@ -18,7 +18,7 @@ var main_user;
 function getUser(callback){
     auth.onAuthStateChanged(function(user) {
         if(user!==null){
-            callback(true);
+            callback(user);
             return true;
         } else {
             callback(false);
@@ -26,7 +26,5 @@ function getUser(callback){
         }
     })
 }
-
-
 
 
