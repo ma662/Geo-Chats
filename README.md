@@ -1,5 +1,5 @@
 # Geo-Chats
-Project 1 repository for a messaging chat room app that utilizes Google maps API.
+Messaging chatroom application that allows users of a similar region to communicate and share their location.
 
 https://ma662.github.io/Geo-Chats/login.html
 
